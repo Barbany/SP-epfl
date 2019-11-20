@@ -1,2 +1,6 @@
 # Mathematical Foundations of Signal Processing @ EPFL
-Repository for the homework and practical exercises of the course Mathematical Foundations of Signal Processing (COM-514) at EPFL
+## Labs
+1. Finite dimensional linear inverse problems: A geometrical perspective
+2. A Functional Data Analysis Framework for Positron Emission Tomography
+
+A simple tomograpaphy example is also provided
