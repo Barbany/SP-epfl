@@ -1,0 +1,393 @@
+\documentclass{article}
+\usepackage[top=2cm, bottom=3.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+% Indicator function
+\usepackage{bbm}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\providecommand{\lin}[1]{\ensuremath{\left\langle #1 \right\rangle}}
+\providecommand{\norm}[1]{\ensuremath{\left\lVert#1\right\rVert}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\homework}[4]{
+   \thispagestyle{plain}
+   \newpage
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf COM-514: Mathematical Foundations of Signal Processing \hfill Fall 2019} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\Large \hfill Homework \##1 - Due date: #2\hfill} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\hfill Student: #3} }
+      \vspace{2mm}}
+   }
+   \end{center}
+}
+
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{claim}{Claim}
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}
+\newtheorem{fact}{Fact}
+\newtheorem{assumption}{Assumption}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\mbeq}{\overset{!}{=}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+
+\begin{document}
+\homework{1}{18\textsuperscript{th} October 2019}{Oriol Barbany Mayor}
+
+\section*{Solution 1: Bases and Matrix Representation of Linear Operators}
+\subsection*{Part (a)}
+\begin{enumerate}[label=(\roman*)]
+    \item In order to have $\text{span}(\{\psi_0(t)\})=\text{span}(\{\phi_0(t)\})$, we need $\psi_0(t)$ to be a constant, say $\psi_0(t)=c$ with $c\in \mathbb{R}\setminus\{0\}$, and we want $\psi_0(t)$ to have unit norm.
+    \begin{align}
+        \|\psi_0(t)\|
+ := \sqrt{\langle \psi_0(t),\psi_0(t)\rangle} = \sqrt{\int_{-1}^1 c^2 dt} = \sqrt{\left[ c^2 x \right]_{-1}^1}=c \sqrt{ 2} = 1 \Longleftrightarrow c=\frac{1}{\sqrt{2}}    \end{align}
+ \item Let's check that $\phi_1(t) \perp \psi_0(t)$:
+ \begin{align}
+     \langle \phi_1(t),\psi_0(t)\rangle = \int_{-1}^1 \frac{1}{\sqrt{2}} t dt = \frac{1}{\sqrt{2}} \left[ \frac{t^2}{2} \right]_{-1}^1= 0
+ \end{align}
+ Now, let $\psi_1(t) = b \phi_1(t)$ for $b \in \mathbb{R}\setminus\{0\}$ such that $\psi_1(t)$ has unit norm.
+ \begin{align}
+     \|\psi_1(t)\|
+ := \sqrt{\langle \psi_1(t),\psi_1(t)\rangle} = \sqrt{\int_{-1}^1 b^2 t^2 dt} = \sqrt{\left[ b^2 \frac{t^3}{3} \right]_{-1}^1}=b \sqrt{ \frac{2}{3}} = 1 \Longleftrightarrow b={\sqrt{\frac{3}{2}}} 
+ \end{align}
+ \item Finally, let $\psi_2(t)= a t^2 + bt +c$ for $a,b,c\in \mathbb{R}$ with $a\neq 0$ in order to span all the polynomials up to order 2. We need $\psi_2(t) \perp \psi_0(t)$ and $\psi_2(t) \perp \psi_1(t)$ in order to form a bases:
+ \begin{align}
+    \langle \psi_2(t),\psi_0(t)\rangle = \frac{1}{\sqrt{2}}\int_{-1}^1  at^2 + bt + c dt = \frac{1}{\sqrt{2}} \left[ a\frac{t^3}{3} + b\frac{t^2}{2} + ct \right]_{-1}^1=\frac{1}{\sqrt{2}}(a \frac{2}{3}+ 2c)= 0 \Longleftrightarrow c = \frac{-a}{3}
+    \label{eq:ex1a1}
+ \end{align}
+ 
+  \begin{align}
+    \langle \psi_2(t),\psi_1(t)\rangle = \sqrt{\frac{3}{2}}\int_{-1}^1  at^3 + bt^2 + ct dt = \sqrt{\frac{3}{2}} \left[ a\frac{t^4}{4} + b\frac{t^3}{3} + c\frac{t^2}{2} \right]_{-1}^1=\sqrt{\frac{3}{2}}b \frac{2}{3}= 0 \Longleftrightarrow b=0
+    \label{eq:ex1a2}
+ \end{align}
+ Finally we want an orthonormal bases so we need $\|\psi_2(t)\|=1$. Applying the results in \eqref{eq:ex1a1}, \eqref{eq:ex1a2}, we get:
+ \begin{align}
+     \|\psi_2(t)\|
+ &:= \sqrt{\langle \psi_2(t),\psi_2(t)\rangle} = \sqrt{\int_{-1}^1 \left( a t^2 -\frac{a}{3}\right)^2 dt} = \sqrt{\left[ \frac{a^2t^5}{5} - \frac{2}{3}\frac{a^2t^3}{3} + \frac{a ^2 t}{9} \right]_{-1}^1}\\
+ &=\sqrt{ \frac{a^2 8}{45}} = 1 \Longleftrightarrow a=\frac{3\sqrt{10}}{4} 
+ \end{align}
+\end{enumerate}
+
+So $\Psi = \left\lbrace\frac{1}{\sqrt{2}}, \sqrt{\frac{3}{2}}t, \frac{3\sqrt{10}}{4}  t^2- \frac{\sqrt{10}}{4}\right\rbrace$ is an orthonormal bases for $H$.
+\subsection*{Part (b)}
+\begin{enumerate}[label=(\roman*), resume]
+    \item Let $\Gamma_\Phi: \mathbb{R}^3 \to \mathbb{R}^3$ be the matrix that performs differentiation on the expansion coefficients of $\Phi$. Then, as we are using the usual base for polynomials, we know that $\frac{d}{dt}\Phi = \{0,1,2t\}$, and thus
+    \begin{align}
+        \Gamma_\Phi = \begin{bmatrix}
+            0 & 1 & 0 \\
+            0 & 0 & 2 \\
+            0 & 0 & 0
+        \end{bmatrix}
+    \end{align}
+    \item \begin{enumerate}[label=(\alph*)]
+        \item Let $A:H \to H$ be the differentiation operator,
+
+    \begin{align}
+        \Gamma_\Psi = \Psi^* A \Psi =
+        \begin{bmatrix}
+            \langle A\psi_0, \psi_0 \rangle & \langle A\psi_1, \psi_0 \rangle & \langle A\psi_2, \psi_0 \rangle \\
+            \langle A\psi_0, \psi_1 \rangle & \langle A \psi_1, \psi_1 \rangle & \langle A\psi_2, \psi_1 \rangle \\
+            \langle A \psi_0, \psi_2 \rangle & \langle A \psi_1, \psi_2 \rangle & \langle A \psi_2, \psi_2 \rangle
+        \end{bmatrix}
+    =
+    \begin{bmatrix}
+            \langle \frac{d}{dt}\psi_0, \psi_0 \rangle & \langle \frac{d}{dt}\psi_1, \psi_0 \rangle & \langle \frac{d}{dt}\psi_2, \psi_0 \rangle \\
+            \langle \frac{d}{dt}\psi_0, \psi_1 \rangle & \langle \frac{d}{dt} \psi_1, \psi_1 \rangle & \langle \frac{d}{dt}\psi_2, \psi_1 \rangle \\
+            \langle \frac{d}{dt} \psi_0, \psi_2 \rangle & \langle \frac{d}{dt} \psi_1, \psi_2 \rangle & \langle \frac{d}{dt} \psi_2, \psi_2 \rangle
+        \end{bmatrix}
+    \end{align}
+    since $\Psi$ defines an orthonormal bases.
+    
+    \item Numerically, we have that
+    \begin{align}
+        \Gamma_\Psi =
+        \begin{bmatrix}
+            \langle 0,\frac{1}{\sqrt{2}} \rangle & \langle \sqrt{\frac{3}{2}}, \frac{1}{\sqrt{2}} \rangle & \langle \frac{3\sqrt{10}}{2}t ,\frac{1}{\sqrt{2}} \rangle \\
+            \langle 0, \sqrt{\frac{3}{2}}t \rangle & \langle\sqrt{\frac{3}{2}}, \sqrt{\frac{3}{2}}t\rangle & \langle \frac{3\sqrt{10}}{2}t, \sqrt{\frac{3}{2}}t \rangle \\
+            \langle0, \frac{3\sqrt{10}}{4}  t^2- \frac{\sqrt{10}}{4} \rangle & \langle\sqrt{\frac{3}{2}}, \frac{3\sqrt{10}}{4}  t^2- \frac{\sqrt{10}}{4} \rangle & \langle \frac{3\sqrt{10}}{2}t ,\frac{3\sqrt{10}}{4}  t^2- \frac{\sqrt{10}}{4} \rangle
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            0 & \sqrt{3} & 0 \\
+            0 & 0 & \sqrt{15}\\
+            0 & 0 & 0 \\
+        \end{bmatrix}
+    \end{align}
+    \end{enumerate}
+\end{enumerate}
+
+\section*{Solution 2: Norms of Oblique Projections}
+\begin{enumerate}[label=(\roman*)]
+    \item
+    \begin{fact}
+        If $\Pi :\mathcal{H} \to \mathcal{H}$ is an orthogonal projection in a Hilbert space $\mathcal{H}$,
+        \begin{align}
+            \|\Pi x\|\leq \|x\|, \quad \forall x\in \mathcal{H}
+        \end{align}
+        \label{cl:1}
+    \end{fact}
+    
+    Using Fact \ref{cl:1}, we have that,
+    \begin{align}
+        \|\Pi \|:= \max_{x:\|x\|=1} \|\Pi x\| \leq \max_{x:\|x\|=1} \|x\|=1
+        \label{eq:ex21a}
+    \end{align}
+    
+    $\Pi$ is an orthogonal projection iff $\Pi \Pi = \Pi$ and $\Pi^T = \Pi$. Mixing both properties, we have that $\Pi^T \Pi = \Pi \Pi = \Pi$. Let's prove that $I-\Pi$ is also an orthogonal projection
+    \begin{align}
+        (I- \Pi)^T = I^T - \Pi^T = I - \Pi
+    \end{align}
+    \begin{align}
+        (I- \Pi)(I-\Pi) = I I - \Pi I - I \Pi + \Pi \Pi = I - 2\Pi + \Pi = I - \Pi
+    \end{align}
+    
+    By idempotence (so this also holds for oblique projections) and definition of the spectral norm,
+    \begin{align}
+        \norm{\Pi x} = \norm{\Pi (\Pi x)} \leq \norm{\Pi} \norm{\Pi x} \Longleftrightarrow \norm{\Pi} \geq 1
+        \label{eq:ex21b}
+    \end{align}
+    
+    So putting together \eqref{eq:ex21a}, \eqref{eq:ex21b} we get that $\norm{\Pi} = 1$. Moreover, since $(I-\Pi)$ is also an orthogonal projection as proved before,
+    \begin{align}
+        \norm{\Pi} = \norm{I - \Pi} = 1
+    \end{align}
+    \item
+    \begin{align}
+        \|x\|^2 + \|y\|^2 &:= \lin{Pu, Pu} + \lin{(I-P)u, (I-P)u}  \\   
+        &= \lin{Pu, Pu} + \lin{u, (I-P)u}  - \lin{Pu, (I-P)u} \\
+        &= \lin{Pu, Pu} + \lin{(I-P)u, u}^*  - \lin{(I-P)u, Pu}^* \\
+        &= \lin{Pu, Pu}^* + \lin{u, u}^*- \lin{Pu, u}^*  - \lin{u, Pu}^* + \lin{Pu, Pu}^*
+        \label{eq:ex221}
+    \end{align}
+    where I only used fundamental properties of the inner product and in the last equality, I use the fact that a norm is real (so $\|x\|^2 = \lin{x,x} = \lin{x,x}^*$).
+    
+    By rearranging terms in \eqref{eq:ex221}, we get that
+    \begin{align}
+        \|x\|^2 + \|y\|^2 &= \norm{u}  - (\lin{Pu, u}^* - \lin{Pu, Pu}^*) - (\lin{u, Pu}^* - \lin{Pu, Pu}^*) \\
+        &= \norm{u} - (\lin{u, Pu} - \lin{Pu, Pu}) - \lin{(I-P)u, Pu}^* \\
+         &= \norm{u} - \lin{(I-P)u, Pu} - \lin{Pu, (I-P)u} \\
+        &= \norm{u} - (\lin{Pu, (I-P)u}^* + \lin{Pu, (I-P)u})\\
+        &:= \norm{u} - 2 \mathbb{R}e\langle x, y \rangle
+        \label{eq:ex22}
+    \end{align}
+    \item
+    In the case that $x=0$,
+    \begin{align}
+        \norm{Pu}:=\norm{x} = 0 \leq \norm{I - P}
+    \end{align}
+    which follows from non-negativity of norms.
+    
+    Let $P':=I-P$. We have that
+    \begin{align}
+        P'^2 = (I-P)(I-P)=I-P-P+P^2 = I-P := P'
+        \label{eq:projection}
+    \end{align}
+    so $P'$ is an oblique projection.
+    
+    If $y:=(I-P)u=0$, we have that $u = Pu$, and hence
+    \begin{align}
+        \norm{Pu} = \norm{u} = 1 \leq \norm{I-P}
+    \end{align}
+    where the inequality holds since the norm of any projection is greater or equal than one as proved in \eqref{eq:ex21b}.
+    
+    \item 
+    \begin{align}
+        \|w\|^2 &:= \|\tilde{x} + \tilde{y}\|^2 := \langle\tilde{x} + \tilde{y},\tilde{x} + \tilde{y} \rangle = \langle\tilde{x} ,\tilde{x} + \tilde{y} \rangle + \langle\tilde{y},\tilde{x} + \tilde{y} \rangle \\
+        &=\langle\tilde{x} ,\tilde{x} \rangle^* + \langle \tilde{y}, \tilde{x} \rangle^* + \langle \tilde{x}, \tilde{y} \rangle^*  + \langle \tilde{y}, \tilde{y} \rangle^*  = \|y\|^2 +  \langle y,x \rangle^* + \langle x, y \rangle ^* + \|x\|^2 \\
+        &= \|y\|^2 +  \langle x,y \rangle + \langle x, y \rangle ^* + \|x\|^2 = \|x\|^2 + \|y\|^2 + 2 \mathbb{R}e\langle x, y \rangle \\
+        &= \|u\|^2
+        \label{eq:ex24}
+    \end{align}
+    where the last step follows from \eqref{eq:ex22}. Moreover, since $\norm{u}=1$ by construction, $\norm{w}=1$.
+    \item
+    \begin{align}
+        (I-P)w &:= (I-P)\frac{\norm{y}}{\norm{x}}x + (I-P)\frac{\norm{x}}{\norm{y}}y \\
+        &= \frac{\norm{y}}{\norm{x}}x -
+        \frac{\norm{y}}{\norm{x}}Px +\frac{\norm{x}}{\norm{y}}y-\frac{\norm{x}}{\norm{y}}Py &&(P^2 = P \Rightarrow Px := PPu=Pu:=x)\\
+        &= \frac{\norm{x}}{\norm{y}}y-\frac{\norm{x}}{\norm{y}}Py := \frac{\norm{x}}{\norm{y}}(I-P)u-\frac{\norm{x}}{\norm{y}}P(I-P)u \\
+        &= \frac{\norm{x}}{\norm{y}}u -\frac{\norm{x}}{\norm{y}}Pu-\frac{\norm{x}}{\norm{y}}Pu + \frac{\norm{x}}{\norm{y}}Pu &&(P^2=P) \\
+        &=\frac{\norm{x}}{\norm{y}} (I-P)u := \frac{\norm{x}}{\norm{y}}y
+        \label{eq:ex25}
+    \end{align}
+    
+    So using \eqref{eq:ex25}, we have that
+    \begin{align}
+        \norm{(I-P)w} = \frac{\norm{x}}{\norm{y}}\norm{y} = \norm{x}:= \norm{Pu}
+        \label{eq:ex25b}
+    \end{align}
+    
+    So taking equations \eqref{eq:ex24}, \eqref{eq:ex25b} and by definition of the spectral norm,
+    \begin{align}
+        \norm{Pu} = \norm{(I-P)w} \leq \norm{I-P}\norm{w} = \norm{I-P}
+    \end{align}
+    
+    Applying again the definition of spectral norm and given that $\norm{u}=1$,
+    \begin{align}
+        \norm{I-P} \geq \norm{Pu} \geq \norm{P} \norm{u} = \norm{P}
+        \label{eq:ex1final}
+    \end{align}
+    which concludes the proof.
+    \item Take $P':=I-P$ as in \eqref{eq:projection}, where it was proved that $P'$ is an oblique projection so \eqref{eq:ex1final} holds and we have that
+    \begin{align}
+        \norm{I-P}:=\norm{P'} \leq \norm{I-P'} := \norm{I-(I-P)} = \norm{P}
+        \label{eq:ex1finalb}
+    \end{align}
+    
+    By mixing \eqref{eq:ex1final} and \eqref{eq:ex1finalb}, we have that $\norm{I-P}=\norm{P}$.
+\end{enumerate}
+
+\section*{Solution 3: DFT Matrix}
+\begin{enumerate}
+    \item This matrices have coefficients
+    \begin{align}
+        A_{k,n}= e^{-j\frac{2\pi kn}{N}} \quad; \quad  B_{n,k}= \frac{1}{N}e^{j\frac{2\pi kn}{N}}
+        \label{eq:ex31}
+    \end{align}
+    \begin{align}
+        \begin{bmatrix}
+            X_1 \\ \vdots \\ X_N 
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+             & & & & \\
+             & & A & & \\
+             & & & & \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            x_1 \\ \vdots \\ x_N 
+        \end{bmatrix} \qquad ; \qquad 
+        \begin{bmatrix}
+            x_1 \\ \vdots \\ x_n 
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+             & & & & \\
+             & & B & & \\
+             & & & & \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            X_1 \\ \vdots \\ X_N
+        \end{bmatrix}
+    \end{align}
+    with $n,k \in \{1,2,\dots,N\}$.
+    \item Note that equality (b) is trivial to prove, since the coefficients of the matrices $A$ and $B$ as expressed in \eqref{eq:ex31} satisfy $A_{k,n} = N B_{n,k}^*$, so $A = N B^*$.
+    
+    If equality (a) is satisfied, then $A B = BA = I_{N\times N}$. Let's start by proving that $A$ is a left-inverse of $B$.
+    \begin{align}
+        (A B)_{i,j} = \frac{1}{N} \sum_{l=0}^{N-1} e ^{-j\frac{2\pi i l}{N}} e ^{j\frac{2\pi l j}{N}}
+    \end{align}
+    
+    So here we can distinguish two cases. On the one hand, if $i=j$, sum simplifies to
+    \begin{align}
+        (A B)_{i,j} = \frac{1}{N} \sum_{l=0}^{N-1} 1= 1
+    \end{align}
+    
+    On the other hand, if $i\neq j$,
+    \begin{align}
+        (A B)_{i,j} = \frac{1-(e^{j\frac{2\pi N}{N}})^{j-i}}{1-e^{j\frac{2\pi (j-i)}{N}}}=\frac{1-1^{j-i}}{1-e^{j\frac{2\pi (j-i)}{N}}}=0
+    \end{align}
+    so $A$ is a left-inverse of $B$. Now, let's see if it's actually a proper inverse.
+    \begin{align}
+        (B A)_{i,j} = \frac{1}{N} \sum_{l=0}^{N-1} e ^{-j\frac{2\pi l j}{N}} e ^{j\frac{2\pi i l}{N}} = (AB)_{j, i} = \mathbbm{1}_{\{i=j\}}
+    \end{align}
+    and hence we can conclude that $A = B^{-1}$.
+    
+    \item Let $b_k(n) := \frac{1}{N}e^{j\frac{2\pi kn}{N}}$. If $b_k := [b_k(0),\dots, b_k(n)]^T$ is an eigenvector of $C$, then $C b_k = \lambda_k b_k$.
+    
+    Let $\mathcal{A}_k$ be the sequence resulting of applying the Inverse Discrete Fourier Transform to the sequence $\alpha_n$ for $k,n\in\{0,1,\dots,N-1\}$.
+    \begin{align}
+        (Cb_k)_0 &= \sum_{l=0}^{N-1} b_k(l) \alpha_{l} = \alpha_0 b_k(0) + \alpha_1 b_k(1) + \cdots \\
+        &:=\mathcal{A}_k = N \mathcal{A}_k b_k(0)
+    \end{align}
+    so it seems $\lambda_k = N \mathcal{A}_k$.
+    
+    Note that $b_k(n+1) = b_k(n)e^{j\frac{2\pi k}{N}}$ and that $b_k(N):= \frac{1}{N} e^{j2\pi k}=\frac{1}{N} = b_k(0)$.
+    \begin{align}
+        (Cb_k)_1 &= \sum_{l=0}^{N-1} b_k(l) \alpha_{(1-l)\mod N} = \alpha_{N-1} b_k(0) + \alpha_0 b_k(1) + \alpha_1 b_k(2) +\cdots  \\
+        &=\alpha_{N-1} b_k(0) + e^{j\frac{2\pi k}{N}} (\alpha_0 b_k(0) + \alpha_1 b_k(1) + \cdots) \\
+        &= \alpha_{N-1} b_k(0) + e^{j\frac{2\pi k}{N}} N\mathcal{A}_k b(0)- e^{j\frac{2\pi k}{N}}\alpha_{N-1} b(N-1) = \alpha_{N-1} b_k(0) + N\mathcal{A}_k b(1) - \alpha_{N-1} b(N) \\
+        &= N\mathcal{A}_k b(1)
+    \end{align}
+    
+    The general form of $(Cb_k)_i$ is
+    \begin{align}
+        (Cb_k)_i = \sum_{l=0}^{N-1} b_k(l) \alpha_{(i-l)\mod N}
+    \end{align}
+    
+    Let's finish the proof by induction on $i$. We can do so since by the circular property of the matrix, we can express $(Cb_k)_{i+1}$ in terms of $(Cb_k)_i$.
+    
+    I already proved the base cases $i=0,1$ before. Now suppose by induction hypothesis that $(Cb_k)_i = N \mathcal{A}_k b_k(i)$ holds for the $i-$th coefficient and let $\beta=(i+1) \mod N = 0$. Note that the sequence $\alpha_{(i+1-l)\mod N}$ is $\alpha_\beta, \alpha_{\beta+1},\dots,\alpha_{\beta + N -1}$ and the sequence $\alpha_{(i-l)\mod N}$ is $\alpha_{\beta+1}, \alpha_{\beta +2},\dots , \alpha_{\beta + N -1},\alpha_\beta$.
+    \begin{align}
+        (Cb_k)_{i+1} &= \sum_{l=0}^{N-1} b_k(l) \alpha_{(i+1-l)\mod N} \\
+        &= \alpha_\beta b_k(0) + \alpha_{\beta +1} b_k(1) + \alpha_{\beta +2} b_k(2) +\cdots  \\
+        &=\alpha_\beta b_k(0) + e^{j\frac{2\pi k}{N}} (\alpha_{\beta +1} b_k(0) + \alpha_{\beta +2} b_k(1) + \cdots) \\
+        &= \alpha_\beta b_k(0) + e^{j\frac{2\pi k}{N}} N\mathcal{A}_k b_k(i) - e^{j\frac{2\pi k}{N}}\alpha_{\beta} b(N-1) &&\text{By induction hypothesis}\\
+        &= \alpha_\beta b_k(0) + e^{j\frac{2\pi k}{N}} N\mathcal{A}_kb_k(i) - \alpha_\beta b(N) \\
+        &= N\mathcal{A}_k b_k(i)e^{j\frac{2\pi k}{N}} = N\mathcal{A}_k b_k(i+1)
+    \end{align}
+    
+    \item By the findings of the previous section, we know that
+    \begin{align}
+        CB = C \begin{bmatrix}
+        | &  & | \\
+        b_0 & \dots & b_{N-1} \\
+        | &  & |
+        \end{bmatrix}=N\begin{bmatrix}
+        | &  & | \\
+        \mathcal{A}_0 b_0 & \dots & \mathcal{A}_{N-1} b_{N-1} \\
+        | &  & |
+        \end{bmatrix}
+    \end{align}
+    
+    Since $A= B^{-1}$, $AB=I$ so
+    \begin{align}
+        ACB = N\text{diag}(\mathcal{A}) =N\begin{bmatrix}
+        \mathcal{A}_0 & &0 \\
+        & \ddots & \\
+        0& & \mathcal{A}_{N-1}
+        \end{bmatrix}
+        \label{eq:ex34}
+    \end{align}
+    \item Given that we can run \texttt{FFT} in $\mathcal{O}(n \log_2 n)$, using the analytical result of the operation $ACB$ obtained in \eqref{eq:ex34} is computationally much cheaper than computing the direct matrix product in case of not having a circular matrix. In this case, we would require $\mathcal{O}(n^3)$ operations (or in the best case $\mathcal{O}(n^{2.373})$, which is the asymptotically fastest known algorithm to perform $n\times n$ matrix multiplication).
+    
+    Numerically, for $N=1024$, which is a common number of DFT coefficients (power of 2 so \texttt{fft} performs better) the comparison is shown in Table \ref{tab:cv}.
+\end{enumerate}
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{cr}
+    \toprule
+        Algorithm & Asymptotic number of operations \\
+        \toprule
+        \texttt{FFT} ($C$ circulant) & $10,240$ \\
+        \midrule
+         Matrix multiplication & $1,073,741,824$ \\
+    Efficient matrix multiplication & $\sim13,913,673$ \\
+    \bottomrule
+    
+  \end{tabular}
+
+  \caption{Comparison with non-circulant $C$}
+  \label{tab:cv}
+\end{table}
+
+
+\end{document}
+
