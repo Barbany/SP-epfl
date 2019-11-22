@@ -1,0 +1,147 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+\makeatletter
+\newcommand{\skipitems}[1]{%
+  \addtocounter{\@enumctr}{#1}%
+}
+\makeatother
+
+\begin{document}
+    \homework{COM-514: Mathematical Foundations of Signal Processing}{Fall 2019}{2}{29\textsuperscript{th} November 2019}{Oriol Barbany Mayor}
+    
+    \problem{Quick Review of Chapter 2}
+    \begin{enumerate}[label=(\roman*)]
+        \item
+        \begin{itemize}
+            \item $A(x)=x * h_A, \quad x, A_h\in \ell^2$. It's easy to check that $A$ is a linear operator. Let $y\in \ell^2$. 
+            \begin{align}
+                (A(\alpha x + \beta y))_n&=((\alpha x + \beta y) * h_A)_n = \sum_{k\in \mathbb{Z}} (\alpha x[k] + \beta y[k]) h_A[n-k]\\
+                &=\alpha \sum_{k\in \mathbb{Z}} x[k]h_A[n-k] + \beta \sum_{k\in \mathbb{Z}} y[k] h_A[n-k] = \alpha (A(x))_n + \beta (A(y))_n
+            \end{align}
+            
+            Moreover, $A$ is also shift invariant so it's LSI. To see this, let $x'[n]:=x[n-n_0]$
+            \begin{align}
+                (A(x'))_n= x' * h_A := \sum_{k\in \mathbb{Z}} x'[n-k] h_A[k] := \sum_{k\in \mathbb{Z}} x[n-k-n_0] h_A[k] = (A(x))_{n-n_0}
+            \end{align}
+            \item $B(x)(t)=x(t)+\text{sinc}(t),\quad x\in \cL^2(\mathbb{R})$ is clearly not shift invariant since for $x'(t):=x(t-t_0)$
+            \begin{align}
+                B(x')(t)=x'(t)+\text{sinc}(t):=x(t-t_0)+\text{sinc}(t)\neq B(x)(t-t_0)
+            \end{align}
+            hence $B$ is not LSI.
+            
+            \item $C(x)(t)=x(2t),\quad x \in \cL^2(\mathbb{R})$. Let $y\in \cL^2(\mathbb{R})$. $C$ is a linear operator since
+            \begin{align}
+                C(\alpha x + \beta y)(t) = (\alpha x + \beta y)(2t) = \alpha x(2t) + \beta y(2t)
+            \end{align}
+            
+            To check whether it's also shift invariant, let $x'(t):=x(t-t_0)$
+            \begin{align}
+                C(x')(t) = x'(2t) := x(2(t-t_0))=C(x)(t-t_0)
+            \end{align}
+            hence $C$ is LSI.
+            
+            \item $D(x)=\frac{dx}{dt},\quad x\in \cC^\infty$. It's well-known that the derivative is linear, but for completeness, let $y\in \cC^\infty$
+            \begin{align}
+                D(\alpha x + \beta y) = \frac{d}{dt}(\alpha x + \beta y) = \alpha \frac{dx}{dt} + \beta \frac{dy}{dt}
+            \end{align}
+            so indeed linearity holds for $D$. To check shift invariance, let $x'(t):=x(t-t_0)$ and by chain rule we have that
+            \begin{align}
+                D(x')(t)=\frac{d}{dt}x'(t) := \frac{d}{dt}x(t-t_0) =  D(x)(t-t_0) \left[\frac{d}{dt}(t-t_0)\right] =  D(x)(t-t_0)
+            \end{align}
+            so $D$ is also LSI.
+        \end{itemize}
+        
+        \skipitems{1}
+        \item By definition of the adjoint operator, we have that
+        \begin{align}
+            \lin{C(x)(t),y(t)}_{\cL^2(\mathbb{R})} &= \int_{-\infty}^{\infty} C(x)(t)y^*(t) dt = \int_{-\infty}^{\infty} x(2t) y^*(t) dt \\
+            &= \lin{x(t),C^*(y)(t)}_{\cL^2(\mathbb{R})} = \int_{-\infty}^{\infty} x(t) (C^*(y)(t))^* dt
+        \end{align}
+        so we can see that by letting $t':=2t$,
+        \begin{align}
+            \int_{-\infty}^{\infty} x(2t) y^*(t) dt = \int_{-\infty}^{\infty} x(t') y^*\left(\frac{t'}{2}\right) dt'= \int_{-\infty}^{\infty} x(t) (C^*(y)(t))^* dt
+        \end{align}
+        and hence $C^*(y)(t)=y\left(\frac{t}{2}\right)$.
+        \item Let $x,y\in \cH$ and let $c\geq 0$ be such that $x(t)=0$ for $|t|\geq c$ and $d\geq 0$ such that $y(t)=0$ for $|t|\geq d$. Now by definition of the adjoint operator,
+        \begin{align}
+            \lin{D(x)(t),y(t)}_{\cH} &= \int_{\cH} D(x)(t)y^*(t) dt = \int_{-d }^{d} \frac{dx}{dt}(t) y^*(t) dt \\
+            &= \lin{x(t),D^*(y)(t)}_{\cH} = \int_{\cH} x(t) (D^*(y)(t))^* dt
+        \end{align}
+        
+        Using integration by parts, we get that
+        \begin{align}
+            \int_{-d }^{d} \frac{dx}{dt}(t) y^*(t) dt &=  x(t) y^*(t) \big\rvert_{-\min(c,d)}^{\min(c,d)} -  \int_{\cH} x(t) \frac{dy^*}{dt}(t) dt \\
+            &= -  \int_{\cH} x(t) \frac{dy^*}{dt}(t) dt
+        \end{align}
+        where the last equality follows since $\cH\subset \cL^2(\mathbb{R})$, so $y^* = y$, and $x(\pm \min(c,d))y(\pm \min(c,d))=0$ by the finite support property of $\cH$ and the definition of $c,d$. So $D^*(y)(t)=-\frac{dy}{dt}(t)$.
+        
+    \end{enumerate}
+    
+    \problem{LCMV and GSC Derivation}
+    \begin{enumerate}[label=(\roman*)]
+        \item First of all, note that $\argmax \norm{\xx}=\argmax \norm{\xx}^2 = \argmax \frac{1}{2}\norm{\xx}^2$. We can analytically find the local maximum of a function subject to an equality constraint as in this case by using Lagrange multipliers. Let $\yy$ be the Lagrange multiplier
+        
+        \begin{align}
+            \cL (\xx, \yy) = \frac{1}{2}\norm{\xx}^2 + \yy^* (\bb - A \xx)
+        \end{align}
+        which has its maximum attained at the critical point
+        \begin{align}
+            \nabla_\xx \cL(\xx, \yy) = \xx - A^* \yy = 0 \Longleftrightarrow \xx = A^* \yy
+        \end{align}
+        
+        By imposing the constraint, $A\xx= A A^* \yy= \bb$.
+        \item When $M \leq N$ and $A$ is of full rank, the matrix $A A^*$ is invertible and hence
+        \begin{align}
+            \yy = (A A^*)^{-1} \bb \Longrightarrow \xx = A^* (A A^*)^{-1} \bb
+        \end{align}
+        \item Using again the same trick as before, one can use the equivalent objective function $\frac{1}{2}\hh^* R_x \hh$, which gives a Lagrangian of
+        \begin{align}
+             \cL (\hh, \yy) = \frac{1}{2}\hh^* R_x \hh + \yy^* (\ff - C^* \hh)
+        \end{align}
+        
+        \begin{align}
+            \nabla_\hh \cL(\hh, \yy) = R_x \hh - C \yy = 0 \Longleftrightarrow R_x \hh = C \yy
+        \end{align}
+        
+        Note that $R_x$ is invertible since all its eigenvalues are strictly positive, so $\hh = R_x^{-1} C \yy$. Again we can find the value of the Lagrange multiplier by imposing the constraint
+        \begin{align}
+            C^* \hh = C^* R_x^{-1} C \yy = \ff
+        \end{align}
+        
+        Finally, note that $C^* R_x^{-1} C$ is invertible. By definition of PD, $x R_x^{-1} x > 0\quad \forall x \in \mathbb{R}^M \setminus \{0\}$ and since $C$ is full rank $\dim (\mathcal{R}(C)) = \min(M,N)= M$. The projection $\tilde{x} := C y \neq 0\quad \forall y \in \mathbb{R}^N \setminus \{0\}$ since the nullspace of $C$ is trivial and hence
+        \begin{align}
+        \tilde{x}  := C y = 0 \Longleftrightarrow y = 0 \label{eq:1}
+        \end{align}
+        Now we can see that $\tilde{x}^* R_x^{-1} \tilde{x} > 0\quad \forall \tilde{x} \neq 0$ following from PD of $R_x^{-1}$ so using the latter and \eqref{eq:1},
+        \begin{align}
+        \tilde{x}^* R_x^{-1} \tilde{x} := y^* C^* R_x^{-1} C y > 0\quad \forall y \in \mathbb{R}^N \setminus \{0\} \tag{2}
+        \end{align}
+        and thus $C^* R_x^{-1} C$ is PD and hence invertible.
+        
+        % This is easier to see when analysing the eigenvalue decomposition of $R_x$. Given that the covariance matrix is hermitian, it can be written as $R_x = U \Lambda U^*$, where $U$ is a unitary matrix and $\Lambda = \text{diag}(\lambda_1,\dots, \lambda_n)$ is a diagonal matrix. Given that $R_x$ is also positive definite, $R_x^{-1} = U \Lambda^{-1} U^*$ is also positive definite and hence invertible since $\Lambda^{-1} = (\lambda_1^{-1},\dots, \lambda_n^{-1})$ and $\lambda_i > 0 \Longrightarrow \lambda_i^{-1} > 0$. The matrix $U$ defines an orthonormal basis, and given that $C$ is full rank.
+        
+        So we can write
+        \begin{align}
+            \yy = (C^* R_x^{-1} C)^{-1} \ff \Longrightarrow \hh = R_x^{-1} C (C^* R_x^{-1} C)^{-1} \ff
+        \end{align}
+        
+        Just as a sanity check, note that by setting $R_x = I$, $A = C^*$ and $\ff = \bb$, we recover the solution found in section (i):
+        \begin{align}
+            R_x^{-1} C (C^* R_x^{-1} C)^{-1} \ff = A^* (A A^*)^{-1} \bb = \xx
+        \end{align}
+        \item In this last case we have an unconstrained problem so we can use simple derivation of the objective function to find where its minimum is attained
+        \begin{align}
+            f(\hh_n) = (\hh_0 - C_n \hh_n )^* R_x (\hh_0 - C_n \hh_n )
+        \end{align}
+        
+        Given that a covariance matrix is hermitian,
+        \begin{align}
+            \nabla_{\hh_n} f(\hh_n) = 2 C_n^* R_x (C_n \hh_n - \hh_0) = 0 \Longleftrightarrow C_n^* R_x C_n \hh_n =  C_n^* R_x \hh_0
+        \end{align}
+        
+        Moreover, by previous observation $C_n^* R_x C_n$ is invertible, so $\hh_n = (C_n^* R_x C_n)^{-1} C_n^* R_x \hh_0$ as claimed.
+    \end{enumerate}
+\end{document}
+
