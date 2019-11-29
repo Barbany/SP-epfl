@@ -15,35 +15,35 @@
     \begin{enumerate}[label=(\roman*)]
         \item
         \begin{itemize}
-            \item $A(x)=x * h_A, \quad x, h_A\in \ell^2$. It's easy to check that $A$ is a linear operator. Let $y\in \ell^2$ and for the rest of the exercise let $\alpha, \beta \in \mathbb{C}$.
+            \item $A(x):=x * h_A, \quad x, h_A\in \ell^2$. It's easy to check that $A$ is a linear operator. Let $y\in \ell^2$ and for the rest of the exercise let $\alpha, \beta \in \mathbb{C}$.
             \begin{align}
-                (A(\alpha x + \beta y))_n&=((\alpha x + \beta y) * h_A)_n = \sum_{k\in \mathbb{Z}} (\alpha x[k] + \beta y[k]) h_A[n-k]\\
-                &=\alpha \sum_{k\in \mathbb{Z}} x[k]h_A[n-k] + \beta \sum_{k\in \mathbb{Z}} y[k] h_A[n-k] = \alpha (A(x))_n + \beta (A(y))_n
+                (A(\alpha x + \beta y))_n&:=((\alpha x + \beta y) * h_A)_n := \sum_{k\in \mathbb{Z}} (\alpha x[k] + \beta y[k]) h_A[n-k]\\
+                &=\alpha \sum_{k\in \mathbb{Z}} x[k]h_A[n-k] + \beta \sum_{k\in \mathbb{Z}} y[k] h_A[n-k] =: \alpha (A(x))_n + \beta (A(y))_n
             \end{align}
             
             Moreover, $A$ is also shift invariant so it's LSI. To see this, let $x'[n]:=x[n-n_0]$. Then,
             \begin{align}
-                (A(x'))_n= x' * h_A := \sum_{k\in \mathbb{Z}} x'[n-k] h_A[k] := \sum_{k\in \mathbb{Z}} x[n-k-n_0] h_A[k] = (A(x))_{n-n_0}
+                (A(x'))_n:= x' * h_A := \sum_{k\in \mathbb{Z}} x'[n-k] h_A[k] := \sum_{k\in \mathbb{Z}} x[n-k-n_0] h_A[k] =: (A(x))_{n-n_0}
             \end{align}
-            \item $B(x)(t)=x(t)+\text{sinc}(t),\quad x\in \cL^2(\mathbb{R})$ is clearly not shift invariant. For the rest of the exercise, let $x'(t):=x(t-t_0)$. In this case
+            \item $B(x)(t):=x(t)+\text{sinc}(t),\quad x\in \cL^2(\mathbb{R})$ is clearly not shift invariant. For the rest of the exercise, let $x'(t):=x(t-t_0)$. In this case
             \begin{align}
-                B(x')(t)=x'(t)+\text{sinc}(t):=x(t-t_0)+\text{sinc}(t)\neq B(x)(t-t_0)
+                B(x')(t):=x'(t)+\text{sinc}(t):=x(t-t_0)+\text{sinc}(t)\neq x(t-t_0) + \text{sinc}(t-t_0)=: B(x)(t-t_0)
             \end{align}
             hence $B$ is not LSI.
             
-            \item $C(x)(t)=x(2t),\quad x \in \cL^2(\mathbb{R})$. Note that
+            \item $C(x)(t):=x(2t),\quad x \in \cL^2(\mathbb{R})$. Note that
             \begin{align}
-                C(x')(t) = x'(2t) := x(2t-t_0)\neq x(2(t-t_0)) = C(x)(t-t_0)
+                C(x')(t) := x'(2t) := x(2t-t_0)\neq x(2(t-t_0)) =: C(x)(t-t_0)
             \end{align}
             hence $C$ is not LSI.
             
-            \item $D(x)=\frac{dx}{dt},\quad x\in \cC^\infty$. It's well-known that the derivative is linear, but for completeness, let $y\in \cC^\infty$
+            \item $D(x):=\frac{dx}{dt},\quad x\in \cC^\infty$. It's well-known that the derivative is linear, but for completeness, let $y\in \cC^\infty$
             \begin{align}
-                D(\alpha x + \beta y) = \frac{d}{dt}(\alpha x + \beta y) = \alpha \frac{dx}{dt} + \beta \frac{dy}{dt} = \alpha D(x) + \beta D(y)
+                D(\alpha x + \beta y) := \frac{d}{dt}(\alpha x + \beta y) = \alpha \frac{dx}{dt} + \beta \frac{dy}{dt} =: \alpha D(x) + \beta D(y)
             \end{align}
             so indeed linearity holds for $D$. By chain rule we have that
             \begin{align}
-                D(x')(t)=\frac{d}{dt}x'(t) := \frac{d}{dt}x(t-t_0) =  D(x)(t-t_0) \left[\frac{d}{dt}(t-t_0)\right] =  D(x)(t-t_0)
+                D(x')(t):=\frac{d}{dt}x'(t) := \frac{d}{dt}x(t-t_0) =:  D(x)(t-t_0) \left[\frac{d}{dt}(t-t_0)\right] =  D(x)(t-t_0)
             \end{align}
             so $D$ is also LSI.
         \end{itemize}
@@ -51,26 +51,26 @@
         \skipitems{1}
         \item By definition of the adjoint operator, we have that
         \begin{align}
-            \lin{C(x)(t),y(t)}_{\cL^2(\mathbb{R})} &= \int_{-\infty}^{\infty} C(x)(t)y^*(t) dt = \int_{-\infty}^{\infty} x(2t) y^*(t) dt \\
+            \lin{C(x)(t),y(t)}_{\cL^2(\mathbb{R})} &= \int_{-\infty}^{\infty} C(x)(t)y^*(t) dt := \int_{-\infty}^{\infty} x(2t) y^*(t) dt \\
             &= \lin{x(t),C^*(y)(t)}_{\cL^2(\mathbb{R})} = \int_{-\infty}^{\infty} x(t) (C^*(y)(t))^* dt
         \end{align}
         so we can see that by letting $t':=2t$,
         \begin{align}
-            \int_{-\infty}^{\infty} x(2t) y^*(t) dt = \int_{-\infty}^{\infty} x(t') y^*\left(\frac{t'}{2}\right) dt'= \int_{-\infty}^{\infty} x(t') (C^*(y)(t'))^* dt'
+            \int_{-\infty}^{\infty} x(2t) y^*(t) dt = \int_{-\infty}^{\infty} x(t') y^*\left(\frac{t'}{2}\right) dt'=: \int_{-\infty}^{\infty} x(t') (C^*(y)(t'))^* dt'
         \end{align}
         and hence $C^*(y)(t)=y\left(\frac{t}{2}\right)$.
         \item Let $x,y\in \cH$ and let $c\geq 0$ be such that $x(t)=0$ for $|t|\geq c$ and $d\geq 0$ such that $y(t)=0$ for $|t|\geq d$. Now by definition of the adjoint operator,
         \begin{align}
-            \lin{D(x)(t),y(t)}_{\cH} &= \int_{\cH} D(x)(t)y^*(t) dt = \int_{-d }^{d} \frac{dx}{dt}(t) y^*(t) dt \\
+            \lin{D(x)(t),y(t)}_{\cH} &= \int_{\cH} D(x)(t)y^*(t) dt := \int_{-d }^{d} \frac{dx}{dt}(t) y^*(t) dt \\
             &= \lin{x(t),D^*(y)(t)}_{\cH} = \int_{\cH} x(t) (D^*(y)(t))^* dt
         \end{align}
         
         Using integration by parts, we get that
         \begin{align}
             \int_{-d }^{d} \frac{dx}{dt}(t) y^*(t) dt &=  x(t) y^*(t) \big\rvert_{-\min(c,d)}^{\min(c,d)} -  \int_{\cH} x(t) \frac{dy^*}{dt}(t) dt \\
-            &= -  \int_{\cH} x(t) \frac{dy^*}{dt}(t) dt
+            &= -  \int_{\cH} x(t) \frac{dy^*}{dt}(t) dt =: \int_{\cH} x(t) (D^*(y)(t))^* dt
         \end{align}
-        where the last equality follows since $\cH\subset \cL^2(\mathbb{R})$, so $y^* = y$, and $x(\pm \min(c,d))y(\pm \min(c,d))=0$ by the finite support property of $\cH$ and the definition of $c,d$. So $D^*(y)(t)=-\frac{dy}{dt}(t)$.
+        where the penultimate equality follows since $\cH\subset \cL^2(\mathbb{R})$, so $y^* = y$, and $x(\pm \min(c,d))y(\pm \min(c,d))=0$ by the finite support property of $\cH$ and the definition of $c,d$. So $D^*(y)(t)=-\frac{dy}{dt}(t)$.
         
     \end{enumerate}
     
@@ -100,7 +100,7 @@
             \nabla_\hh \cL(\hh, \yy) = R_x \hh - C \yy = 0 \Longleftrightarrow R_x \hh = C \yy
         \end{align}
         
-        Note that $R_x$ is invertible since $R_x \succ 0$ and hence all its eigenvalues are strictly positive, so $\hh = R_x^{-1} C \yy$. Again we can find the value of the Lagrange multiplier by imposing the constraint
+        Note that $R_x$ is invertible since $R_x \succ 0$, so $\hh = R_x^{-1} C \yy$. Again we can find the value of the Lagrange multiplier by imposing the constraint
         \begin{align}
             C^* \hh = C^* R_x^{-1} C \yy = \ff
         \end{align}
@@ -112,13 +112,13 @@
         
         Finally, we have that $C^* R_x^{-1} C$ is invertible if Assumption \ref{ass:1} holds. To proof this, I will proceed in a few steps.
         
-        First of all note that $R_x^{-1} \succ 0$. This is easier to see when analysing the eigenvalue decomposition of $R_x$. Given that the covariance matrix is hermitian, it can be written as $R_x = U \Lambda U^*$, where $U$ is a unitary matrix and $\Lambda = \text{diag}(\lambda_1,\dots, \lambda_n)$ is a diagonal matrix. Given that $R_x$ is positive definite, $R_x^{-1} = U \Lambda^{-1} U^*$ is also positive definite and hence invertible since $\Lambda^{-1} = (\lambda_1^{-1},\dots, \lambda_n^{-1})$ and $\lambda_i > 0 \Longrightarrow \lambda_i^{-1} > 0$. Note that this latter is trivial to see since $(R_x^{-1})^{-1}=R_x$.
+        First of all note that $R_x^{-1} \succ 0$. This is easier to see when analysing the eigenvalue decomposition of $R_x$. Given that the covariance matrix is hermitian, it can be written as $R_x = U \Lambda U^*$, where $U$ is a unitary matrix and $\Lambda = \text{diag}(\lambda_1,\dots, \lambda_n)$ is a diagonal matrix. Given that $R_x$ is positive definite, $R_x^{-1} = U \Lambda^{-1} U^*$ is also positive definite and hence invertible since $\Lambda^{-1} = (\lambda_1^{-1},\dots, \lambda_n^{-1})$ and $\lambda_i > 0 \Longrightarrow \lambda_i^{-1} > 0$. Note that invertibility is trivial to see since $(R_x^{-1})^{-1}=R_x$.
         
         By definition of positive definiteness, we say that $R_x^{-1}\succ 0$ if $\xx R_x^{-1} \xx > 0\quad \forall \xx \in \mathbb{R}^M \setminus \{\0\}$. The projection $\tilde{\xx} := C \yy$ is non-zero $\forall \yy \in \mathbb{R}^N \setminus \{\0\}$ since the nullspace of $C$ is trivial by the rank-nullity theorem. In this case, this translates to $\dim(\cN(C))+ \dim(\cR(C))=P$, meaning that $\dim(\cN(C))=0$. Hence,
         \begin{align}
         \tilde{\xx}  := C \yy = \0 \Longleftrightarrow \yy = \0 \label{eq:1}
         \end{align}
-        Now we can see that $\tilde{\xx}^* R_x^{-1} \tilde{\xx} > 0\quad \forall \tilde{\xx} \neq \0$ following from the fact that $R_x^{-1} \succ 0$. So using the latter and \eqref{eq:1},
+        Now we can see that $\tilde{\xx}^* R_x^{-1} \tilde{\xx} > 0\quad \forall \tilde{\xx} \neq \0$ following from the fact that $R_x^{-1} \succ 0$. So using the latter and the equivalence of \eqref{eq:1},
         \begin{align}
         \yy^* C^* R_x^{-1} C \yy:=\tilde{\xx}^* R_x^{-1} \tilde{\xx} > 0\quad \forall \yy \in \mathbb{R}^N \setminus \{0\}
         \end{align}
@@ -137,7 +137,7 @@
         
         \item In this last case we have an unconstrained problem so we can use simple derivation of the objective function to find where its minimum is attained.
         \begin{align}
-            f(\hh_n) = (\hh_0 - C_n \hh_n )^* R_x (\hh_0 - C_n \hh_n )
+            f(\hh_n) := (\hh_0 - C_n \hh_n )^* R_x (\hh_0 - C_n \hh_n )
         \end{align}
         
         Note that we also need Assumption \ref{ass:1} to hold, since computing $\hh_0$ needs the matrix $C^* C$ to be invertible.
@@ -147,7 +147,7 @@
             \nabla_{\hh_n} f(\hh_n) = 2 C_n^* R_x (C_n \hh_n - \hh_0) = 0 \Longleftrightarrow C_n^* R_x C_n \hh_n =  C_n^* R_x \hh_0
         \end{align}
         
-        Moreover, by previous observation and under Assumption \ref{ass:1} $C_n^* R_x C_n$ is invertible, so
+        Moreover, by previous observation and under Assumption \ref{ass:1}, $C_n^* R_x C_n$ is invertible, so
         \begin{align}
             \hh_n = (C_n^* R_x C_n)^{-1} C_n^* R_x \hh_0
         \end{align}
