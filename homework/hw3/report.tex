@@ -1,0 +1,146 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+\makeatletter
+\newcommand{\skipitems}[1]{%
+  \addtocounter{\@enumctr}{#1}%
+}
+\makeatother
+
+\begin{document}
+    \homework{COM-514: Mathematical Foundations of Signal Processing}{Fall 2019}{3}{20\textsuperscript{th} December 2019}{Oriol Barbany Mayor}
+    
+    \problem{Maximum SNR Beamformer}
+    \problem{Splines (I)}
+    \begin{enumerate}[label=(\roman*)]
+        \item To find the values $a_1,a_2$ it's enough to impose the boundary conditions
+        \begin{align}
+            s_1(1)=a_1 = f(1)=\frac{1}{1} \Longrightarrow a_1 = 1 \qquad ; \qquad s_2(4)=a_2=f(4)=\frac{1}{4} \Longrightarrow a_2 = \frac{1}{4}
+        \end{align}
+        \item The rows of the matrix correspond to the following constraints:
+        \begin{enumerate}[label=\arabic*.]
+            \item $s_1'(1)=f'(1)=\frac{-1}{1^2}$
+            \item $s_1(4)=f(4)=\frac{1}{4}$
+            \item $s_1'(4)=s_1'(4)$
+            \item $s_1''(4)=s_1''(4)$
+            \item $s_2'(4)=f'(4)=\frac{-1}{4^2}$
+            \item $s_2(5)=f(5)=\frac{1}{5}$
+        \end{enumerate}
+        \begin{align}
+            \begin{bmatrix}
+            1 & 0 & 0 & 0 & 0 & 0 \\
+            (4-1) & (4-1)^2 & (4-1)^3 & 0 & 0 & 0\\
+             1 & 2(4-1) & 3(4-1)^2 & -1 & -2(4-1) & -3(4-1)^2 \\
+            0 & 2 & 3(4-1) & 0 & -2 & -3(4-1) \\
+            0 & 0 & 0 & 1 & 0 & 0 \\
+            0 & 0 & 0 & (5-4) & (5-4)^2 & (5-4)^3 \\
+            \end{bmatrix}
+            \begin{bmatrix}
+                b_1 \\
+                c_1 \\
+                d_1 \\
+                b_2 \\
+                c_2 \\
+                d_2
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                -1 \\
+                \frac{1}{4} - 1 \\
+                0 \\
+                0 \\
+                -\frac{1}{16} \\
+                \frac{1}{5}-\frac{1}{4} \\
+            \end{bmatrix}
+        \end{align}
+        \item Let $d(x):=f(x)-s(x)$. Then, using integration by parts in each subinterval,
+        \begin{align}
+            \int_a^b s''(x)d''(x)dx&:=\int_a^b s''(x)(f''(x) - s''(x))dx\\
+            &=\sum_{i=1}^{n-1}\int_{x_i}^{x_{i+1}} s''(x)(f''(x) - s''(x))dx \\
+            &=\sum_{i=1}^{n-1} s''(x)(f'(x)-s'(x))\bigg\rvert_{x_i}^{x_{i+1}} - \int_{x_i}^{x_{i+1}}  s'''(x)(f'(x) - s'(x))dx
+            \label{eq:subinterval}
+        \end{align}
+        
+        The spline is chosen so that $f(x_i)=s(x_i) \ \forall i\in [1,2,\dots, n]$. Moreover, given that $s$ is a cubic Spline, the function $s'''$ is a constant, namely $c\in \mathbb{C}$. Hence, 
+        \begin{align}
+            \int_{x_i}^{x_{i+1}}  s'''(x)(f'(x) - s'(x))dx &= c \int_{x_i}^{x_{i+1}}(f'(x) - s'(x))dx \\
+            &= c[f(x_i)-f(x_{i+1})-(s(x_i)-s(x_{i+1}))]=0
+            \label{eq:const}
+        \end{align}
+        
+        Mixing \eqref{eq:subinterval} and \eqref{eq:const} and telescoping,
+        \begin{align}
+            \int_a^b s''(x)d''(x)dx&:=\sum_{i=1}^{n-1} s''(x)(f'(x)-s'(x))\bigg\rvert_{x_i}^{x_{i+1}} \\
+            &= \sum_{i=1}^{n-1} s''(x_{i+1})(f'(x_{i+1})-s'(x_{i+1})) - s''(x_{i})(f'(x_{i})-s'(x_i)) \\
+            &=s''(b)(f'(b)-s'(b)) - s''(a)(f'(a)-s'(a)) =0
+            \label{eq:0}
+        \end{align}
+        where the last equality follows by the clamped boundary conditions.
+        
+        \item Using \eqref{eq:0}, we have that
+        \begin{align}
+            \int_a^b s''(x)(s''(x) - f''(x)) dx = 0 \Longleftrightarrow \int_a^b [s''(x)]^2dx = \int_a^b s''(x) f''(x) dx
+            \label{eq:equality}
+        \end{align}
+        
+        Given the latter, we can write
+        \begin{align}
+           \int_{a}^b [f''(x)-s''(x)]^2 dx &=  \int_{a}^b [f''(x)]^2 dx -  2\int_{a}^b f''(x)s''(x)dx +  \int_{a}^b [s''(x)]^2 dx \\
+           &\refEQ{eq:equality} \int_{a}^b [f''(x)]^2 dx -  2\int_{a}^b [s''(x)]^2 dx +  \int_{a}^b [s''(x)]^2 dx \\
+           &=\int_{a}^b [f''(x)]^2 dx - \int_{a}^b [s''(x)]^2 dx \geq 0
+        \end{align}
+        where the last inequality follows since we are integrating a non-negative function. The proof concludes by rearranging these terms:
+        \begin{align}
+          \int_{a}^b [f''(x)]^2 dx \geq \int_{a}^b [s''(x)]^2 dx
+        \end{align}
+    \end{enumerate}
+    \problem{Splines (II)}
+    \begin{enumerate}
+        \item The minimum value of $K$ would be 1, since the signal $x(t)$ is piece-wise linear.
+        \item Let $x(t)=\sum_{k \in \mathbb{Z}}\alpha_k \beta_+^{(1)}(t-k)$. Given that the B-spline of degree 1 is defined as a triangle of height 1 from 0 to 1, and the signal $x(t)$ is piece-wise linear, it's easy to find the values of $\alpha_k$ graphically.
+        \begin{align}
+            \alpha = \begin{bmatrix}
+                \cdots &
+                0 &
+                \fbox{1} &
+                1 &
+                3 &
+                -1 &
+                0 &
+                \cdots
+            \end{bmatrix}^T
+            \label{eq:alpha}
+        \end{align}
+        \item Using Fubini's theorem,
+        \begin{align}
+            \int_{-\infty}^t x(\tau) d\tau &= \int_{-\infty}^t\sum_{k \in \mathbb{Z}}\alpha_k \beta_+^{(1)}(\tau-k) d\tau=\sum_{k \in \mathbb{Z}}\alpha_k \int_{-\infty}^t \beta_+^{(1)}(\tau-k) d\tau =\sum_{k \in \mathbb{Z}}\alpha_k \int_{-\infty}^{t-k} \beta_+^{(1)}(s) ds 
+        \end{align}
+        
+        Given that the causal elementary B-spline of degree $K$ is defined as $\beta_+^{(K)}:=\beta_+^{(K-1)} \ast \beta_+^{(0)}$,
+        \begin{align}
+        \int_{-\infty}^t x(\tau) d\tau  &= \sum_{k \in \mathbb{Z}}\alpha_k \int_{-\infty}^{t-k} \beta_+^{(1)}(s) ds= \sum_{k \in \mathbb{Z}}\alpha_k \sum_{m=0}^{\infty}\int_{t-k-m-1}^{t-k-m} \beta_+^{(1)}(s) ds \\
+        &=: \sum_{k \in \mathbb{Z}}\alpha_k\sum_{m=0}^{\infty}\int_{-\infty}^{\infty} \beta_+^{(1)}(s) \beta_+^{(0)}(t-k-m-s) ds \\
+        &= \sum_{k \in \mathbb{Z}}\alpha_k\sum_{m=0}^{\infty} (\beta_+^{(1)} \ast  \beta_+^{(0)})((t-k-m)) 
+        \\&:= \sum_{k \in \mathbb{Z}}\alpha_k\sum_{m=0}^{\infty} \beta_+^{(2)}(t-k-m) \\
+        &=\sum_{k \in \mathbb{Z}}\alpha_k \sum_{n=k}^{\infty} \beta_+^{(2)}(t-n)=\sum_{n \in \mathbb{Z}} \left[\sum_{k=-\infty}^{n}\alpha_k \right] \beta_+^{(2)}(t-n) \\
+        &:= \sum_{n \in \mathbb{Z}} b_n \beta_+^{(2)}(t-n)
+        \end{align}
+        
+        So, using the latter and \eqref{eq:alpha}, we have that
+        \begin{align}
+            \alpha = \begin{bmatrix}
+                \cdots &
+                0 &
+                \fbox{1} &
+                2 &
+                5 &
+                4 &
+                4 &
+                \cdots
+            \end{bmatrix}^T
+        \end{align}
+        
+    \end{enumerate}
+\end{document}
+
