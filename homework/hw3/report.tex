@@ -12,6 +12,31 @@
     \homework{COM-514: Mathematical Foundations of Signal Processing}{Fall 2019}{3}{20\textsuperscript{th} December 2019}{Oriol Barbany Mayor}
     
     \problem{Maximum SNR Beamformer}
+    Let $R_z$ be the covariance matrix of the signal and $R_e$ the covariance matrix of the noise. Given that both are zero-mean WSS,
+    \begin{align}
+        \text{SNR}=\frac{\E[|\hh^* z_n|^2]}{\E[|\hh^* e_n|^2]}=\frac{\hh^* R_z \hh}{\hh^* R_e \hh}
+    \end{align}
+    
+    To find the maximum, equate the gradient to zero. Given that any covariance matrix is self-adjoint,
+    \begin{align}
+        \nabla_{\hh}\text{SNR}=\frac{2R_z \hh \hh^* R_e \hh - 2 \hh^* R_z \hh R_e \hh}{(\hh^* R_e \hh)^2}=0
+    \end{align}
+    
+    Given that $R_e \succ 0$, we can invert this matrix and we get the generalized eigenvalue problem.
+    \begin{align}
+        R_z \hh = \frac{\hh^* R_z \hh}{\hh^* R_e \hh}R_e \hh \Longrightarrow R_e^{-1}R_z \hh = \frac{\hh^* R_z \hh}{\hh^* R_e \hh}\hh
+    \end{align}
+    
+    Now, given that $z_n=\aa(\theta)s_n$ and $s_n$ is a narrow-band zero-mean WSS signal, $R_z=\sigma_s^2 \aa(\theta)\aa^*(\theta)$. Substituting into the latter expression, we get
+    \begin{align}
+        \sigma_s^2 R_e^{-1} \aa(\theta)\aa^*(\theta)\hh = \sigma_s^2 \frac{\hh^* \aa(\theta)\aa^*(\theta) \hh}{\hh^* R_e \hh}\hh
+    \end{align}
+    
+    Rearranging terms, we get the desired result
+    \begin{align}
+        R_e^{-1} \aa(\theta) = \frac{\hh^* \aa(\theta)}{\hh^* R_e \hh}\hh \Longrightarrow \hh = \frac{\hh^* R_e \hh}{\hh^* \aa(\theta)}R_e^{-1} \aa(\theta)
+        \end{align}
+    
     \problem{Splines (I)}
     \begin{enumerate}[label=(\roman*)]
         \item To find the values $a_1,a_2$ it's enough to impose the boundary conditions
