@@ -56,9 +56,9 @@
         \end{align}
         so we can see that by letting $t':=2t$,
         \begin{align}
-            \int_{-\infty}^{\infty} x(2t) y^*(t) dt = \int_{-\infty}^{\infty} x(t') y^*\left(\frac{t'}{2}\right) dt'=: \int_{-\infty}^{\infty} x(t') (C^*(y)(t'))^* dt'
+            \int_{-\infty}^{\infty} x(2t) y^*(t) dt = \int_{-\infty}^{\infty} x(t') y^*\left(\frac{t'}{2}\right)\frac{1}{2} dt'=: \frac{1}{2}\int_{-\infty}^{\infty} x(t') (C^*(y)(t'))^* dt'
         \end{align}
-        and hence $C^*(y)(t)=y\left(\frac{t}{2}\right)$.
+        and hence $C^*(y)(t)=\frac{1}{2}y\left(\frac{t}{2}\right)$.
         \item Let $x,y\in \cH$ and let $c\geq 0$ be such that $x(t)=0$ for $|t|\geq c$ and $d\geq 0$ such that $y(t)=0$ for $|t|\geq d$. Now by definition of the adjoint operator,
         \begin{align}
             \lin{D(x)(t),y(t)}_{\cH} &= \int_{\cH} D(x)(t)y^*(t) dt := \int_{-d }^{d} \frac{dx}{dt}(t) y^*(t) dt \\
