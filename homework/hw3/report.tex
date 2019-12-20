@@ -47,19 +47,19 @@
         \begin{enumerate}[label=\arabic*.]
             \item $s_1'(1)=f'(1)=\frac{-1}{1^2}$
             \item $s_1(4)=f(4)=\frac{1}{4}$
-            \item $s_1'(4)=s_1'(4)$
-            \item $s_1''(4)=s_1''(4)$
-            \item $s_2'(4)=f'(4)=\frac{-1}{4^2}$
+            \item $s_1'(4)=s_2'(4)$
+            \item $s_1''(4)=s_2''(4)$
             \item $s_2(5)=f(5)=\frac{1}{5}$
+             \item $s_2'(5)=f'(5)=\frac{-1}{5^2}$
         \end{enumerate}
         \begin{align}
             \begin{bmatrix}
             1 & 0 & 0 & 0 & 0 & 0 \\
             (4-1) & (4-1)^2 & (4-1)^3 & 0 & 0 & 0\\
-             1 & 2(4-1) & 3(4-1)^2 & -1 & -2(4-1) & -3(4-1)^2 \\
-            0 & 2 & 3(4-1) & 0 & -2 & -3(4-1) \\
-            0 & 0 & 0 & 1 & 0 & 0 \\
+             1 & 2(4-1) & 3(4-1)^2 & -1 & 0 & 0 \\
+            0 & 2 & 6(4-1) & 0 & -2 & 0 \\
             0 & 0 & 0 & (5-4) & (5-4)^2 & (5-4)^3 \\
+            0 & 0 & 0 & 1 & 2(5-4) & 3(5-4)^2 \\
             \end{bmatrix}
             \begin{bmatrix}
                 b_1 \\
@@ -72,13 +72,23 @@
             =
             \begin{bmatrix}
                 -1 \\
-                \frac{1}{4} - 1 \\
+                \frac{1}{4} - a_1 \\
                 0 \\
                 0 \\
-                -\frac{1}{16} \\
-                \frac{1}{5}-\frac{1}{4} \\
+                \frac{1}{5}-a_2 \\
+                -\frac{1}{25} \\
             \end{bmatrix}
         \end{align}
+        
+        Solving the previous linear system, gives the cubic spline approximation depicted in \autoref{fig:spline}.
+        
+        \begin{figure}
+            \centering
+            \includegraphics[width=.7\textwidth]{spline_app.png}
+            \caption{Cubic spline approximation of $f(x)=\frac{1}{x}$ with clamped boundary conditions}
+            \label{fig:spline}
+        \end{figure}
+        
         \item Let $d(x):=f(x)-s(x)$. Then, using integration by parts in each subinterval,
         \begin{align}
             \int_a^b s''(x)d''(x)dx&:=\int_a^b s''(x)(f''(x) - s''(x))dx\\
@@ -147,9 +157,9 @@
         \int_{-\infty}^t x(\tau) d\tau  &= \sum_{k \in \mathbb{Z}}\alpha_k \int_{-\infty}^{t-k} \beta_+^{(1)}(s) ds= \sum_{k \in \mathbb{Z}}\alpha_k \sum_{m=0}^{\infty}\int_{t-k-m-1}^{t-k-m} \beta_+^{(1)}(s) ds \\
         &=: \sum_{k \in \mathbb{Z}}\alpha_k\sum_{m=0}^{\infty}\int_{-\infty}^{\infty} \beta_+^{(1)}(s) \beta_+^{(0)}(t-k-m-s) ds \\
         &= \sum_{k \in \mathbb{Z}}\alpha_k\sum_{m=0}^{\infty} (\beta_+^{(1)} \ast  \beta_+^{(0)})((t-k-m)) 
-        \\&:= \sum_{k \in \mathbb{Z}}\alpha_k\sum_{m=0}^{\infty} \beta_+^{(2)}(t-k-m) \\
+        \\&=: \sum_{k \in \mathbb{Z}}\alpha_k\sum_{m=0}^{\infty} \beta_+^{(2)}(t-k-m) \\
         &=\sum_{k \in \mathbb{Z}}\alpha_k \sum_{n=k}^{\infty} \beta_+^{(2)}(t-n)=\sum_{n \in \mathbb{Z}} \left[\sum_{k=-\infty}^{n}\alpha_k \right] \beta_+^{(2)}(t-n) \\
-        &:= \sum_{n \in \mathbb{Z}} b_n \beta_+^{(2)}(t-n)
+        &=: \sum_{n \in \mathbb{Z}} b_n \beta_+^{(2)}(t-n)
         \end{align}
         
         So, using the latter and \eqref{eq:alpha}, we have that
