@@ -1,0 +1,419 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{bbm}
+
+\usepackage{tikz}
+\usepackage{textcomp}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
+\usepackage{environ}
+\makeatletter
+\newsavebox{\measure@tikzpicture}
+\NewEnviron{scaletikzpicturetowidth}[1]{%
+  \def\tikz@width{#1}%
+  \def\tikzscale{1}\begin{lrbox}{\measure@tikzpicture}%
+  \BODY
+  \end{lrbox}%
+  \pgfmathparse{#1/\wd\measure@tikzpicture}%
+  \edef\tikzscale{\pgfmathresult}%
+  \BODY
+}
+\makeatother
+
+\newcommand\aug{\fboxsep=-\fboxrule\!\!\!\fbox{\strut}\!\!\!}
+
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\newcommand\myfigure[4]{%
+  \ifdim#2>.8\linewidth
+    {%
+      \centering
+      \includegraphics[width=#3]{#4}%
+    }%
+  \else
+  \begin{wrapfigure}{#1}{#2}
+    \includegraphics[width=#3]{#4}
+  \end{wrapfigure}
+  \fi
+}
+
+
+\usepackage{color,mathtools}
+\input{epfml_macros.tex}
+
+\pagestyle{empty}
+ 
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\color{blue!60}\normalfont\normalsize\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\color{red!50!yellow}\normalfont\small\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\color{purple}\normalfont\footnotesize\bfseries}}
+\makeatother
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\newcommand{\disadv}[1]{{\color{red} #1}}
+\newcommand{\adv}[1]{{\color{green!60!blue} #1}}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+\usepackage[a4paper, margin=0.5cm, landscape]{geometry}
+
+\begin{document}
+% To set a smaller font size
+\fontsize{7pt}{8pt}\selectfont
+
+\begin{multicols*}{3}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+    \section{Basics}
+    \textbf{Sylvester’s inequality: }If $A$ is an $M\times N$ matrix and B is an $N\times K$ matrix, then $\text{rank}(A) + \text{rank}(B) - N \leq \text{rank}(AB)$.
+    
+    \textbf{Cholesky decomposition: }Any $A$ hermitian PD matrix can be expressed as $A=LL^*$, where where $L$ is an invertible lower triangular matrix with real and positive diagonal entries.
+    
+    \textbf{Vandermonde matrix: }A Vandermonde matrix $V$ of size $M \times N$ has entries of the form $V_{i,j} = t_i^j$ for $i=0,\dots,M-1$, $j=0,\dots,N-1$, and it is of full rank if $t_l \neq t_m$ when $l\neq m$ since $\text{det}(V)=\prod_{0\leq l < m \leq N-1}(t_l-t_m)$.
+    
+    \textbf{Circulant matrix: }Implement circular convolution. Its rows are circular rotations of a sequence. They are diagonalized bu the DFT matrix.
+    
+    \textbf{Toeplitz matrix; }Constant coefficients along diagonals. Implements linear convolution. In a matrix representation of a linear and shift-invariant system, the matrix will be Toeplitz.
+    
+    \textbf{Unitary matrix: }$U^{-1}=U^*$ and its eigenvalues satisfy $|\lambda_j|=1$. Unitary matrices are isometries, i.e.\ $\norm{U\xx}=\norm{\xx}$.
+    
+     \textbf{Normal matrices: }$AA^*=A^*A$ (so need to be square).
+    
+    \textbf{Eigenvalue decomposition: }$A\xx =\lambda \xx$ (characteristic equation), $\norm{\xx}=1$, $\lambda \in \overline{\mathbb{F}}$. $\lambda$ verifies $\text{det}(\lambda I - A)=0$. Square matrix diagonalizable if $\exists S$ $n\times n$ and $\Lambda$ diagonal matrix s.t. $A=S\Lambda S^{-1}$. For all square matrices, $A=URU^*$ with $R$ upper triangular matrix, $U$ unitary (Schur decomposition). For normal matrices, $R=\Lambda$, with $\Lambda$ diagonal.
+    
+    \textbf{Singular value decomposition: }$A=USV^*$, $U,V$ unitary, $S$ (e.g. for tall matrix) hermitian diagonal block and 0 block, $U=[U_1 \quad U_0]$. This leads to thin SVD $A=U_1 S_1 V^*$, $U_1,U_0$ form orthonormal basis for $\cR(A),\cN(A^*)$ resp. $U,V$ are resp- eigenvectors of normal matrices $AA^*$ and $A^*A$. $A^\dagger = VS^\dagger U^*$ ($S^\dagger$ is $S^T$ with inverted singular values).
+    
+    \textbf{Determinant of a matrix: }Oriented volume of the hyper-parallelepiped defined by column vectors of $A$. $|\text{det}(U)|=1$ for unitary matrices (e.g. rotation and reflection).
+    
+    \textbf{Geometric series: }For $r\neq 1$, $\sum_{k=n_0}^{n}r^k = \frac{r^{n_0}-r^{n+1}}{1-r}$.
+    
+    \textbf{Pseudo-inverse: }The pseudo-inverse of $A$ denoted $A^\dagger$ satisfies all the four statements: $AA^\dagger A=A$, $A^\dagger A A^\dagger=A$, $(AA^\dagger)^*=AA^\dagger$ and $(A^\dagger A)^*=A^\dagger A$. If $A$ has linearly independent columns (non-singular), $A^*A$ invertible and $A^\dagger=(A^*A)^{-1}A^*$ is a left-inverse. If $A$ has linearly independent rows ($A^*$ non-singular), $AA^*$ invertible and $A^\dagger=A^*(AA^*)^{-1}$ is a right-inverse.
+    
+    \textbf{Building projections: }$A A^\dagger$ orthogonal projection into $\cR(A)$. $A^\dagger A$ orthogonal projection into $\cR(A^*)$ (so orthogonal projection into $\cN(A)$ is $I-A^\dagger A$). For $U$ orthonormal set of vectors, $U^\dagger = U^*$.
+    
+    \textbf{Spectral norm: }$\|A\|:=\sup_{\xx\neq \0}\frac{\|A\xx\|}{\|\xx\|}=\sup_{\|\xx\|=1}\|A\xx\| = \sigma_{\max}(A) = \sqrt{\lambda_{\max} (A^* A)}$. Spectral norm is submultiplicative: $\norm{AB}\leq \norm{A}\norm{B}$.
+    
+    \textbf{Change of coordinates: }$\iint_C f(x,y)dxdy=\iint_P f(r,\phi)\begin{vmatrix}\frac{\partial x}{\partial r} & \frac{\partial x}{\partial \phi} \\
+    \frac{\partial y}{\partial r} & \frac{\partial y}{\partial \phi}\end{vmatrix} drd\phi$. In case of switching from cartesian to polar, $x=r\cos(\phi)$, $y=r\sin(\phi)$, $r=\sqrt{x^2+y^2}$, $\phi=\arctan\left(\frac{y}{x}\right)$ and determinant becomes $r$.
+    
+    \subsection{Trigonometric identities}
+    
+    \textbf{Even/odd: }$\sin(-x)=-\sin(x)$, $\cos(-x)=\cos(x)$, $\tan(-x)=-\tan(x)$.
+    
+    \textbf{Cofunction: }$\sin(\frac{\pi}{2}-x)=\cos(x)$, $\cos(\frac{\pi}{2}-x)=\sin(x)$.
+    
+    \textbf{Sum and difference of angles: }$\sin(x + y) = \sin x \cos y + \cos x \sin y$, $\sin(x - y) = \sin x \cos y - \cos x \sin y$, $\cos(x + y) = \cos x \cos y - \sin x \sin y$, $\cos(x - y) = \cos x \cos y + \sin x \sin y$.
+    
+    \textbf{Double angles: }$\sin(2x) = 2 \sin x \cos x$, $\cos(2x) = \cos^2 x -\sin^2 x = 2 \cos^2 x - 1 = 1 - 2 \sin^2 x$.
+    
+    \textbf{Product to sum: }$\sin x\sin y=\frac{1}{2}[\cos(x-y)-\cos(x+y)]$, $\cos x \cos y = \frac{1}{2}[\cos(x-y)+\cos(x+y)]$, $\sin x \cos y=\frac{1}{2}[\sin(x+y)+\sin(x-y)]$.
+    
+    \textbf{Derivatives: }$\frac{d}{dx}\sin(x)=\cos(x)$, $\frac{d}{dx}\cos(x)=-\sin(x)$.
+    
+    \subsection{Ranges, nullspaces and invertibility}
+    For matrix $A$ of size $m\times n$.
+    
+    \textbf{Range: }$\cR(A)=\{y:y=Ax\}$ (linear subspace of $\mathbb{F}^m$).
+    
+    \textbf{Nullspace: }$\cN(A)=\{x:Ax=0\}$ (linear subspace of $\mathbb{F}^n$).
+    
+    \textbf{Rank: }Cardinality of largest set of linearly independent columns (or rows) of $A$; $\text{rank}(A)=\text{dim}(\cR(A))=\text{dim}(\cR(A^*))\leq \min(m,n)$ (if equality, full rank). $\text{rank}(A)=\text{rank}(A^*)$.
+    
+    \textbf{Rank-nullity theorem: }$\text{dim}(\cR(A))+\text{dim}(\cN(A^*))=m$ (since $\cR(A)=\cN(A^*)^\perp$), $\text{dim}(\cR(A^*))+\text{dim}(\cN(A))=n$ (since $\cR(A^*)=\cN(A)^\perp$).
+    
+    \textbf{Invertibility (equivalences): }For $A$ square matrix, $\cN(A)=\{0\}$ (trivial nullspace), full-rank matrix, no 0 eigenvalue, determinant equal to 0.
+    
+    \section{Hilbert spaces and projection operators}
+    \textbf{Vector space: }Set of vectors ($\R^N$, functions,...), field of scalars (real, complex), vector addition, scalar multiplication. Satisfy $x+y=y+x$ (commutativity), $(x+y)+z=x+(y+z)$ and $(\alpha\beta) x=\alpha(\beta x)$ (associativity), $\alpha(x+y)=\alpha x+ \alpha y$ and $(\alpha+\beta)x=\alpha x + \beta x$ (distributivity), $\exists\0$ s.t. $x+\0=x$ (additive identity), $\exists-x$ s.t. $x+(-x)=\0$ (additive inverse), $1x=x$ (multiplicative identity).
+    
+     \textbf{Subspace: }$S\subseteq V$, $V$ vector space and also $S$ itself. $S\neq \emptyset$, closed under vector addition ($x+y\in S \ \forall x,y\in S$) and scalar multiplication ($\alpha x \in S \ \forall x\in S,\alpha\in \mathbb{F}$, so $\{\0\}\in S$).
+     
+    \textbf{span($S$):} $\{\sum_{k=0}^N\alpha_k\phi_k:\alpha_k\in \mathbb{F},\phi_k\in S,N\in\mathbb{N}\setminus\{\infty\} \}$. Smallest vector space containing the set of vectors $S$. For $S$ infinite, $\overline{\text{span}}(S)$ (o.w. some vectors cannot be represented with \textbf{finite} linear combiation of $\phi_k$). Always a subspace.
+    
+    \textbf{Inner product: }$\lin{\xx + \yy, \zz} = \lin{\xx, \zz} + \lin{\yy, \zz}$ (distributivity), $\lin{\alpha \xx, \yy}= \alpha \lin{\xx, \yy}$ (linearity in the first argument), $\lin{\xx, \yy}^*= \lin{\yy, \xx}$ (hermitian symmetry), $\lin{\xx, \xx} \geq 0$ equality iff $\xx = \0$ (PD). 
+    
+    On $\mathbb{C}^\R$, $\lin{x,y}=\int_{-\infty}^\infty x(t)y^*(t)dt$.
+    
+    \textbf{Norm: }$\norm{\xx} \geq 0$ equality iff $\xx = \0$ (PD), $\norm{\alpha \xx} = |\alpha| \norm{\xx}$ (positive scalability), $\norm{\xx + \yy} \leq \norm{\xx}+\norm{\yy}$ equality iff $\yy = \alpha \xx$ (triangle inequality). $\lin{\xx,\yy}=\norm{\xx}\norm{\yy}\cos\alpha$.
+    
+    \textbf{Pythagorean theorem: }For $\{\xx_k\}$ orthogonal, $\norm{\sum_k \xx_k}^2 = \sum_{k}\norm{\xx}^2$.
+    
+    \textbf{Cauchy-Schwarz: }$|\lin{\xx,\yy}|\leq \norm{\xx}\norm{\yy}$. Equality when $\xx=\alpha\yy$ (collinear).
+    
+    \textbf{Parallelogram law: }$\norm{x+y}^2+\norm{x-y}^2=2(\norm{x}^2+\norm{y}^2)$.
+     
+    \textbf{Linear operator: }$A(x+y)=Ax+Ay$ (additivity), $A(\alpha x)=\alpha(Ax)$ (scalability). Operator norm $\norm{A}=\sup_{\norm{x}=1}\norm{Ax}$.
+    
+    \textbf{Adjoint: }For $A:\cH_0\to \cH_1$, $\lin{Ax,y}_{\cH_1}=\lin{x,A^*y}_{\cH_0}$. Exists and is unique. $\norm{A^*}=\norm{A}$. Operator is unitary iff $A^{-1}=A^*$. If a matrix is self-adjoint (hermitian), its eigenvectors define an orthogonal basis. If $A$ invertible, $(A^{-1})^*=(A^*)^{-1}$.
+
+    \textbf{Projection: }Bounded linear operator ($\norm{P}<\infty$; linear operators with finite-dimensional domains are always bounded) that is idempotent $P^2=P$ (in such case $\norm{P}\geq 1$). If self-adjoint $P^*=P$, orthogonal projection and all eigenvalues are real valued (o.w. oblique).Bounded linear operator $P$ satisfies $\lin{x-Px,Py}=0 \forall x,y\in H$ iff $P$ orthogonal projection. If $S, T$ closed subspaces s.t. $H = S \oplus T$ $\exists$projection $P$ on $H$ s.t. $S = \cR(P),T = \cN (P)$. In an orthogonal projection, all eigenvalues are either 0 or 1, and we have that $\norm{P\xx}\leq \norm{\xx}$ (orthogonal projection is a contraction). Moreover, if range space is not trivial, $\norm{P}=1$.
+    
+    \textbf{Projection theorem: }For $S$ closed subspace of Hilbert space $H$ and $x\in H$, $\norm{x-\hat{x}}\leq \norm{x-s}\ \forall s\in S$ iff $x-\hat{x} \perp S$, $\hat{x}=Px$, $P$ orthogonal projection.
+    
+    \textbf{Basis: }$\Phi=\{\phi_k\}_{k\in\cK}\subset V$, $V=\overline{\text{span}}(\Phi)$ so any $x\in V$ can be expressed as $x=\sum_{k\in \cK}\alpha_k\phi_k$ and expansion coefficients $\alpha_k$ are unique.
+    
+    \textbf{Linear independence: }$\sum_{k\in \cK}\alpha_k \phi_k=0$ iff $\alpha_k=0\ \forall k$.
+    
+    \textbf{Riesz basis: }$\Phi$ basis of Hilbert space $H$, $\exists 0 < \lambda_{\min} \leq \lambda_{\max} < \infty$ s.t. $\forall x \in H$, $\lambda_{\min} \norm{x}^2\leq \sum_{k\in \cK}|\alpha_k|^2 \leq \lambda_{\max} \norm{x}^2$. Let $G=\Phi^*\Phi$ the \textbf{Gram matrix}. $\lambda_{\max}(G)=1/\lambda_{\min}$, $\lambda_{\min}(G)=1/\lambda_{\max}$.
+    
+    \textbf{Orthogonal projection: }$\alpha_k=\lin{x,\phi_k}$, i.e. $\alpha = \Phi^*x$. This gives orthogonal projection to $\overline{\text{span}}(\{\phi_k\})$ (also for orthonormal set, not necessarily basis).
+    
+    \textbf{Gram matrix: }$G=\Phi^*\Phi$, $G_{i,k}=\lin{\phi_k,\phi_i}$.
+    
+    \textbf{Biorthogonal pairs of bases: }$\Phi,\tilde{\Phi}$ both bases for $H$ and biorthogonal: $\lin{\phi_i,\tilde{\phi}_k}=\delta_{i-k}$. In this case $\alpha_k = \lin{x,\tilde{\phi}_k}$, i.e. $\alpha = \tilde{\Phi}^*x$. Residual of projection on biorthogonal pairs of sets, satisfies $x-Px\perp \overline{\text{span}}(\{\tilde{\phi}\}_{k\in\cI})$ $\tilde{\Phi}=\Phi G^{-1}$ if $\Phi$ Riesz basis.
+    
+    \textbf{Parseval equality: }For $\Phi$ orthonormal basis for $H$, $\lin{x,y}=\lin{\Phi^*x,\Phi^*y}=\lin{\alpha,\beta}$ since $\Phi^*\Phi=I$ on $\ell^2(\cK)$, $\Phi\Phi^*=I$ on $H$ (unitary operator). For biorthogonal pairs of bases, $\lin{x,y}=\lin{\tilde{\alpha},\beta}$ since $\tilde{\Phi}^*\Phi=I$ on $\ell^2(\cK)$, $\Phi\tilde{Phi}^*=I$ on $H$. 
+    
+    \textbf{Bessel's inequality: }For orthonormal sets, $\Phi^*\Phi=I$ but $\Phi\Phi^*\neq I$ in general. $\norm{x}^2\geq \norm{\Phi_{\cI}^* x}^2$ with equality when $\Phi$ is a basis.
+            
+    \textbf{Inverse problem: }Find $x$ s.t. $y=Ax$. Solution $\hat{x}$ is consistent with measurements if $\{\hat{x}:\hat{x}=x+\tilde{x},\tilde{x}\in \cN(A)\}$, i.e. $A\tilde{x}=y$.
+    
+    \textbf{Dual basis; }$\tilde{\Phi}=\Phi(\Phi\Phi^*)^{-1}=\Phi G^{-1}$, $G$ the Gram matrix.
+    
+    \textbf{Change of basis: }$x,y\in H$, $y=Ax$, $x=\Phi \alpha$, $y=\Psi\beta$, $\beta=\Gamma\beta$. $\Gamma_{i,j}=\lin{A\phi_j,\tilde{\psi}_i}$.
+    
+    \textbf{Gram-Schmidt procedure: }Want to convert original set $\{s^{(k)}\}$ onto orthonormal set $\{u^{(k)}\}$. At each step $k$, $p^{(k)}=s^{(k)}-\sum_{n=0}^{k-1}\lin{u^{(n)},s^{(k)}}u^{(n)}$. $u^{(k)}=p^{(k)}/\norm{p^{(k)}}$.
+    
+    \section{Discrete Systems}
+    \textbf{Delta function: }$\int_{-\infty}^\infty \delta(t)dt=1$, $\delta(t)=0\ \forall t\neq 0$, $\int_{-\infty}^\infty x(t)\delta(t)dt=x(0)$, $\int_{-\infty}^\infty x(\tau)\delta(t-\tau)d\tau=x(t)$. $\delta(at) = \delta(t)/|a|$.
+    
+    \textbf{Impulse response: }Let $y_k(t)=A(xk(t))$. If $A$ linear ($A(\sum_k \alpha_k x_k(t))=\sum_k \alpha_k y_k(t)$) shift-invariant ($A(x_k(t-\tau))=y_k(t-\tau)$) system, can express $A$ as convolution with impulse response $h(t)=A(\delta(t))$; $A(x(t))=(x\ast h)(t)$. 
+    
+    \textbf{Filter as projection: }A filter is said to be a projection if $h_n=(h\ast h)_n$, or equivalently $H(e^{j\omega})=H^2(e^{j\omega})$. In case of being a projection, orthogonal projection if $h_n=h_{-n}^*$, or equivalently $H(e^{j\omega})=H^*(e^{j\omega})$.
+    
+    \subsection{Transforms}
+    \begin{tabular}{ccc}
+        & Time domain & Frequency domain\\
+        \toprule
+        Fourier Transform & Continuous aperiodic & Continuous aperiodic\\
+        \midrule
+        Fourier Series & Continuous periodic & Discrete aperiodic \\
+        \midrule
+        DTFT & Discrete aperiodic & Continuous aperiodic\\
+        \midrule
+        DFT & Discrete periodic & Discrete periodic\\
+        \bottomrule
+    \end{tabular}
+    \subsubsection{Fourier Transform}
+    \textbf{Definition: }$X(\omega)=\int_{-\infty}^\infty x(t)e^{-j\omega t}dt$, $x(t)=\frac{1}{2\pi}\int_{-\infty}^\infty X(\omega) e^{j\omega t}$.
+    
+    \textbf{Continuous-time convolution: }$(x\ast y)(t)=\int_{-\infty}^\infty x(\tau)y(t-\tau)d\tau$. Eigenfunctions $e^{j\omega t}$.
+    
+    \textbf{Parseval: }$\lin{x(t),y(t)}=\frac{1}{2\pi}\lin{X(\omega),Y(\omega)}$.
+    
+    \textbf{Properties: }$x(\alpha t)\leftrightarrow \frac{1}{\alpha}X\left(\frac{\omega}{\alpha}\right)$, $(x\ast y)(t) \leftrightarrow X(\omega)Y(\omega)$, $x(t)y(t)\leftrightarrow \frac{1}{2\pi} (X\ast Y)(\omega)$, $x(t-\tau)\leftrightarrow e^{-j\omega \tau} X(\omega)$, $e^{j\omega_0 t}x(t)\leftrightarrow X(\omega-\omega_0)$, $x(-t)\leftrightarrow X(-\omega)$, $x^*(t)\leftrightarrow X^*(-\omega)$, $\frac{d^n x(t)}{dt^n}\leftrightarrow (j\omega)^n X(\omega)$, $(-jt)^n x(t) \leftrightarrow \frac{d^n X(\omega)}{d\omega^n}$, $\int_{-\infty}^t x(\tau) d\tau \leftrightarrow \frac{X(\omega)}{j\omega},\ X(0)=0$.
+    
+    \textbf{Poisson sum formula: }$\sum_{n\in \mathbb{Z}}x(t-nT)=\frac{1}{T}\sum_{m\in \mathbb{Z}}X(\frac{2\pi m}{T})e^{j\frac{2\pi m t}{T}}$. Proof: LHS is $T-$periodic so compute Fourier Series and anti-transform result.
+    
+    \textbf{Common transforms: }$\text{sinc}(\omega_0 t)=\frac{\sin{\omega_0 t}}{\omega_0 t} \leftrightarrow \frac{\pi}{\omega_0}\mathbbm{1}_\{\omega \in[-\omega_0,\omega_0] \}$. $\sum_{n\in \mathbb{Z}}\delta(t-nT)\leftrightarrow \frac{2\pi}{T}\sum_{k\in \mathbb{Z}}\delta(\omega-\frac{2k\pi}{T})$. $\frac{1}{t_0}\mathbbm{1}_\{t \in[-t_0/2,t_0/2] \} \leftrightarrow \text{sinc}(\frac{t_0\omega}{2})$. $1-|t|,\ |t|<1 \leftrightarrow \text{sinc}^2(\frac{\omega}{2})$. $1 \leftrightarrow 2\pi \delta(\omega)$. $\delta(t)\leftrightarrow 1$.
+    
+    \subsubsection{Fourier Series (signal of period $T$)}
+    \textbf{Definition: }$X_k=\frac{1}{T}\int_{-\frac{T}{2}}^{\frac{T}{2}}x(t)e^{-j\frac{2\pi k t}{T}}dt$, $x(t)=\sum_{k\in \mathbb{Z}} X_k e^{j\frac{2\pi k t}{T}}$.
+    
+    \textbf{Circular continuous-time convolution: }For $x,y$ $T-$periodic. $(x\circledast y)(t)=\int_{-\frac{T}{2}}^{\frac{T}{2}} x(\tau)y(t-\tau)d\tau$. Eigenfunctions $e^{j\frac{2\pi k t}{T}}$.
+    
+    \textbf{Parseval: }$\lin{x(t),y(t)}=T\lin{X_k,Y_k}$.
+    
+    \textbf{Properties: }$x(t-t_0)\leftrightarrow e^{-j\frac{2\pi k t_0}{T}}X_k$, $e^{j\frac{2\pi k_0 t}{T}}x(t)\leftrightarrow X(k-k_0)$, $(h \circledast x)(t) \leftrightarrow TH_k X_k$, $h(t)x(t)\leftrightarrow (H\ast X)_k$.
+    
+    \textbf{Common transforms: }$\sum_{n\in \mathbb{Z}}\delta(t-nT)\leftrightarrow 1/T$.
+    
+    \subsubsection{DFTF}
+    \textbf{Definition: }$X(e^{j\omega})=\sum_{n\in \mathbb{Z}} x_n e^{-j\omega n}$, $x_n = \frac{1}{2\pi}\int_{-\pi}^\pi X(e^{j\omega})e^{j\omega n}d\omega$.
+    
+    \textbf{Discrete convolution: }$(x\ast y)_n = \sum_{k\in \mathbb{Z}}x_k y_{n-k}$. Eigenfunctions $e^{j\omega n}$.
+    
+    \textbf{Properties: }Transform is $2\pi-$periodic. $(h\ast x)_n \leftrightarrow H(e^{j\omega})X(e^{j\omega})$, $h_n x_n \leftrightarrow \frac{1}{2\pi}(H \circledast X)(e^{j\omega})$.
+    
+    \subsubsection{DFT}
+    \textbf{Definition: }$X_k=\sum_{n=0}^{N-1}x_n W_N^{kn}$, $x_n=\sum_{k=0}^{N-1}X_k W_N^{-kn}$, $W_N^{kn}=e^{-j\frac{2\pi k n}{N}}$.
+    
+    \textbf{Discrete circular convolution: }For $x,y$ sequences of length $N$. $(x\circledast y)_n = \sum_{k= 0}^{N-1}x_k y_{n-k}$. Eigenfunctions $e^{j\frac{2\pi k n}{N}}$. Same as discrete convolution if $x$ has support $M$, $y$ has support $L$ and $N\geq L+M-1$.
+    
+    \textbf{Properties: }$x_{(n-n_0)\mod N} \leftrightarrow W_N^{kn_0} X_k$, $W_n^{-k_0 n} \leftrightarrow X_{(k-k_0) \mod N}$, $(h\circledast x)_n \leftrightarrow H_k X_k$, $h_n x_n \leftrightarrow \frac{1}{N}(H\circledast X)_k$, $x_n^*=X_{-k\mod N}^*$, $x_{-n\mod N}^* \leftrightarrow X_k^*$.
+    
+    \section{Sampling and Interpolation}
+    Interpolation $\tilde{\Phi}$, sampling $\tilde{\Phi}^*$. $\tilde{S}=\cN(\tilde{\Phi}^*)^\perp=\cR(\tilde{\Phi})$ (what can be measured). $S=\cR(\Phi)$ (what can be reproduced). $P=\Phi\tilde{\Phi}^*$ projection (with range $S$ and $x-\hat{x}\perp \tilde{S}$, where $\hat{x}=Px$) iff $\tilde{\Phi}^*\Phi =I$ (or equivalently $\lin{g(t-kT),\tilde{g}^*(nT-T)}_t=\delta_{k-n}$). In this case, we say that sampling and interpolation are consistent (and $\hat{x}$ is the best least-squares approximation of $x$ in $S$). When $\Phi=\left(\tilde{\Phi}^*\right)^\dagger=\tilde{\Phi}(\tilde{\Phi}^*\tilde{\Phi})^{-1}$ (for orthogonal vectors, pseudo-inverse is the adjoint), they form a biorthogonal pair of bases for $S$ and hence $S=\tilde{S}$ and we say that operators are ideally matched (orthogonal projection).
+    
+    To prove $S=\tilde{S}$ when $\Phi=\left(\tilde{\Phi}^*\right)^\dagger$, note that $\Phi$ is a linear combination of columns of $\tilde{\Phi}$ with coefficients given by the corresponding column of $(\tilde{\Phi}^*\tilde{\Phi})^{-1}$ (full rank matrix). Hence, columns of $\Phi,\tilde{\Phi}$ must span the same space.
+    
+    \input{cheatsheet/sampling_diagram.tex}
+    
+    $y_n=\int_{-\infty}^\infty x(\tau)g^*(\tau-t)d\tau \Big|_{t=nT}\qquad;\qquad \tilde{x}(t)=\sum_{n\in\mathbb{Z}}y_n\delta(t-nT)$
+    
+    $\hat{x}(t)=\sum_{k\in\mathbb{Z}}y_k g(t-kT)=\int_{-\infty}^\infty \tilde{x}(\tau)g(t-\tau)d\tau=\Phi\tilde{\Phi}^*x=Px$.
+    
+    In the orthogonal case, $\tilde{\Phi}^*=\Phi^*$ and $\tilde{g}(t)=g^*(-t)$
+    
+    \textbf{Shift-invariant subspace: }A subspace $S\subset \cL^2(\R)$ is a shift-invariant subspace with respect to shift $T\in\R^+$ if $x(t)\in S \implies x(t-kT)\in S \ \forall k\in \mathbb{Z}$. $s\in \cL^2(\R)$ is called a generator of $S$ when $S=\overline{\text{span}}(\{s(t-kT)\}_{k\in \mathbb{Z}})$. To check for latter, have to show that $\forall x \in S$, $\exists \{\alpha_k\}_{k\in \mathbb{Z}}$ unique s.t. $x(t)=\sum_{k\in \mathbb{Z}}\alpha_k s(t-kT)$.
+    
+    \textbf{Subspace of bandlimited functions: }A function $x(t)\in\cL^2(\R)$ has bandwidth $\omega_0\in[0,\infty)$ if its FT satisfies $X(\omega)=0\ \forall |\omega|>\frac{\omega_0}{2}$. This defines the space of $\omega_0-$ bandlimited functions, $\text{BL}[-\omega_0/2,\omega_0/2]$ which is a shift-invariant subspace (proof by delay property of FT).
+    
+    \textbf{Sampling theorem: }If $x\in \text{BL}[-\pi/T,\pi/T]$, $x(t)=\sum_{n\in \mathbb{Z}}x(nT)\text{sinc}\left(\frac{\pi}{T}(t-nT)\right)$. This means that $\text{sinc}$ is a generator for $\frac{2\pi}{T}-$band limited functions. In this case, choose $g(t)=\frac{1}{\sqrt{T}}\text{sinc}\left( \frac{\pi t}{T} \right)=g^*(-t)$ since it s a generator with shit $T$ of $\text{BL}[-\pi/T,\pi/T]$ and $\{g(t-kT)\}_k$ are orthonormal. If $x\in \text{BL}[-\omega_0/2,\omega_0/2]$, we need $T<2\pi / \omega_0$ (Nyquist interval). $\omega_0 / 2\pi$ is called the Nyequist rate.
+    
+    \textbf{Continuous-time convoluton via DSP: }For $x\in\text{BL}[-\pi/T,\pi/T]$, $y=h\ast x$ can be computed by sampling, filtering the resulting sequence and interpolating the result of the convolution. $\tilde{h}_n=\lin{h(t),\text{sinc}(\frac{\pi}{T} (t-nT))}$ without pre-filter (first filter in sampling is multiplying by $\sqrt{T}$).
+    
+    \section{Computational Tomography}
+    Parametrize line with angle $\theta\in[0,\pi)$ of the line's normal vector and signed distance $t\in \R$ from the origin. Cannot use $y=mx+n$ since vertical lines cannot be described.
+    
+    \textbf{Explicit: }$x,y$ parametrized by $s\in\R$, where $L_{\theta, t}=\{(x(s),y(s))\}$. $x(s)=t\cos \theta - s \sin\theta$, $y(s)=t\sin\theta+s\cos\theta$
+    
+    \textbf{Implicit: }$L_{\theta,t}=\{(x,y):x\cos\theta+y\sin\theta= t\}$.
+    
+    \textbf{Radon transform: }Gives sinogram. $\cR[f](\theta,t)=p(\theta,t)=\int_{L_{\theta,t}}f(x,y)d\ss= \int_{-\infty}^\infty\int_{-\infty}^\infty f(x,y)\delta(x\cos\theta+y\sin\theta-t)dxdy$.
+    
+    \textbf{Laminogram or Backprojection Summation: }Adjoint of Radon transform. Assign every point in the image along $L_{\theta,t}$ the value $p(\theta,t)$. Gives blurred reconstruction. $\cB[p](x,y)=f_b(x,y)=\int_{0}^\pi p(\theta,x\cos\theta+y\sin\theta)d\theta$.
+    \textbf{Fourier Slice Theorem: } The Fourier transform of a parallel projection of an image $f (x, y )$ taken at angle $\theta$ gives a slice of its two-dimensional Fourier transform, $F (u, v )$, that subtends an angle $\theta$ with the $u$-axis. $P(\theta, \omega) = F (u, v )\rvert_{u=\omega \cos \theta, v=\omega \sin \theta} = F (\omega \cos \theta, \omega \sin \theta)$, where $P(\theta,\omega)$ is the 1D-FT of $p(\theta, t)$ w.r.t $t$.
+    
+    \textbf{Fourier Reconstruction Method: }Take the 1D Fourier transform of each projection (w.r.t. $t$). Insert the results in the appropriate slices in the $(u, v )$-plane. Resample on a rectangular grid in the $(u, v )$-plane. Take the 2D IFT of the formed 2D spectrum.
+    
+    \subsection{Filtered Backprojection (FBP)}
+    Gives images very close to the original. FBP does not work easily with constraints. With limited data and/or non-uniform distribution of projection angles, reconstruction with FBP contains artifacts. In theory, $f(x,y)=\cB[q](x,y)$ where $q(\theta, t)=\frac{1}{2\pi}\int_{-\infty}^\infty P(\theta,\omega)\frac{|\omega|}{2\pi} e^{j\omega t}d\omega$. To proof this, do inverse 2D-IFT of $F(u,v)$. Change Cartesian to polar coordinates with $\omega\in\R_+,\theta\in [0,2\pi)$ (Recall that $dudv=\omega d\theta d\omega$). Split integral in $\theta$ from 0 to $\pi$ for $\theta$ and $\theta+\pi$. Note that $\tilde{F}(\omega,\theta+\pi)=\tilde{F}(-\omega,\theta)$ since $\cos(\theta+\pi)=-\cos\theta$ and $\sin(\theta+\pi)=-\sin\theta$. Apply Fourier Slice Theorem.
+    
+    \textbf{Convolution backprojection: }Can also write $f(x,y)=\int_{-\infty}^\infty p(\theta,t)h(x\cos\theta+y\sin\theta-t)dtd\theta$, where $h(t)=\frac{1}{2\pi}\int_{-\infty}^\infty \frac{|\omega|}{\pi}e^{j\omega t}d\omega$. Given that $|\omega|\notin \cL^2(\R)$, its FT doesn't exist, so in practice $H(\omega)=\frac{|\omega|}{2\pi}W(\omega)$ for $W$ a suitable window. IFT of ramp filter $\frac{|\omega|}{2\pi}$ is $\text{sinc}-\text{sinc}^2$ (rectangle - triangle).
+    
+    \textbf{Reconstruct image from sinogram: }Take 1D FT of projections (w.r.t. $t$) apply filter $H(\omega)$ and take 1D IFT (if $h(t)$ short, do convolution in spatial domain). Backproject filtered projections and sum backprojected images.
+    
+    \subsection{Algebraic Reconstruction}
+    Suppose $f(x,y)=\sum_{i=0}^{N-1}f_i\phi_i(x,y)$, where $\phi_k$ are the basis functions. Beam shapes are $h_i$. Hence, $b_i=\lin{\ff,h_i}$. With spline surface model, $\bb$ (the measurement) results from $\bb=A\ff$, where $A$ is the measurement matrix or forward operator with $A_{i,k}=\lin{\phi_k,h_i}$ of size $M\times N$ and $\ff$ the unknown pixel weight vector. Usually, number of non-zero coefficients in each row of $A$ is $\cO(\sqrt{N})$, so $A$ sparse (so avoid computing pseudo-inverse, usually dense). Can view $A\ff$ as forward projection, $A^T\bb$ as backprojection. In presence of noise system can be inconsistent: Usually $\hat{\ff}=\argmin_\ff \norm{\bb-A\ff}_2^2$. If $\text{rank}(A)=N$, $\hat{\ff}=(A^T A)^{-1}A^T\bb$ unique. If $\text{rank}(A)=M<N$, take solution with minimum norm $\hat{\ff}=A^T(A A^T)^{-1}\bb$ (both interpreted as FBP). With this approach, handle constraints of scanning topology.
+    
+    \subsubsection{Kaczmarz's algorithm}
+    Let $\{\rr_0^T,\dots,\rr_{M-1}^T\}$ the rows of $A$. Hence $\lin{\ff,\rr_i}=b_i$, which define affine hyperplanes in $\R^N$. If solution to $A\ff=\bb$ exists and is unique, it's intersection of $M$ affine hyperplanes. Kaczmarz's satisfies constraints iteratively starting from initial guess $\ff^{(-1)}$. $\ff^{(k)}=\ff^{(k-1)}+\frac{b_n-\lin{\ff^{(k-1)},\rr_n}}{\norm{\rr_n}_2^2}\rr_n$ for $n=k\mod M$. That is, apply orthogonal projection of $\ff^{(k-1)}$ onto $\cH_n=\{\ff^{(-1)}:\lin{\ff^{(k-1)},\rr_n}=b_n\}$. If there's a unique solution, found with $k\to \infty$. Ordering of rows influence convergence rate (can order to increase angles between consecutive rows or select randomly with e.g. $p_n=\frac{\norm{\rr_n}_2^2}{\norm{A}_F^2}$). Can incorporate constraints such as box constraint $(0\leq f_i\leq 1)$ by projecting each step onto this convex set.
+    
+    \subsubsection{Cimmino's method}
+    Instead of updating one row at a time, update once per sweep with average of all projections. $\ff^{(k)}=\ff^{(k-1)}+A^TW^{-1}(\bb-A\ff^{(k-1)})$ where $W=\text{diag}(M\norm{\rr_0}^2,\dots,M\norm{\rr_{M-1}}^2)$.
+    
+    \section{Stochastic Processes}
+    Covariance $\Sigma_x=\E[(x-\mu_x)(x-\mu_x)^*]$, which is PSD since $u^*\Sigma_x u=\E[u^*(x-\mu_x)(x-\mu_x)^*u]=\E[|u^*(x-\mu_x)|^2]$. $\lin{x,y}=\sum_{n=0}^{N-1}E[x_ny_n^*]$. Autocorrelation $a_{x,n,k}=\E[x_nx_{n-k}^*]$, crosscorrelation $c_{x,y,n,k}=E[x_n y_{n-k}^*]$. For i.i.d. process $a_{x,n,k}=|\mu_x|^2+\sigma_x^2\delta_k$.
+    
+    \textbf{Stationary process: }Joint distribution of $(x_{n_0},\dots,x_{n_L})$ and $((x_{n_0+k},\dots,x_{n_L+k}))$ are identical $\forall\{n_0,\dots,n_L\}\subset \mathbb{Z}$, $\forall k\in \mathbb{Z}$ and $L$ finite.
+    
+    \textbf{WSS: }$\mu_{x,n}=\mu_x$, $a_{x,n,k}=a_{x,k}$ $n,k\in \mathbb{Z}$. $x$ and $y$ jointly WSS if each is WSS and $c_{x,y,n,k}=c_{x,y,k}$. With WSS, we have $\sigma^2_{x,n}=a_{x,0}-|\mu_x|^2=\sigma_x^2$, $a_{x,k}=a^*_{x,-k}$. With joint WSS, $c_{y,x,k}=c^*_{y,x,-k}$.
+    
+    \textbf{White noise:}$\mu_{x,n}=0,\sigma^2_{x,n}=\sigma_x^2$ and $a_{x,k}=\sigma_x^2\delta_k$ (uncorrelated). Gaussian rv's uncorrelated iff independent, so white Gaussian process is i.i.d.
+    
+    \textbf{Independent vs. uncorrelated: }If $X,Y$ independent, $\E[XY]=\E[X]\E[Y]$, which implies that they are uncorrelated, i.e. $\E[(X-\E[X])(Y-\E[Y])]=0$. Converse is only true for zero-mean random variables and jointly Gaussian random variables.
+    
+    \textbf{Whitening or decorrelation: }Processing that results in white noise process. Diagonalization of covariance matrix.
+    
+    \textbf{Filtering WSS processes: }$y=x\ast h$ with $h$ the impulse response of BIBO-stable LSI system (BIBO means L1 norm of $h$ finite). $\mu_{y,n}=\mu_xH(e^{j0})=\mu_y$, $a_{y,n,k}=\sum_{p\in\mathbb{Z}}a_{h,p}a_{xk-p}=a_{y,k}$ so if x WSS, y WSS and x and y jointly WSS. $C_{x,y}(e^{j\omega})=H^*(e^{j\omega})A_x(e^{j\omega})$ and $C_{y,w}(e^{j\omega})=H(e^{j\omega})A_x(e^{j\omega})$.
+    
+    \textbf{Power spectral density: }$x$ WSS. DTFT of its autocorrelation (FT in case of continuous time). $A_x(e^{j\omega})=\sum_{k\in\mathbb{Z}}a_{x,k}e^{-j\omega k}$.
+    $A_y(e^{j\omega})=|H(e^{j\omega})|^2A_x(e^{j\omega})$.
+    
+    \textbf{Power: }$P_x=\frac{1}{2\pi}\int_{-\pi}^\pi A_x(e^{j\omega})=a_{x,0}$.
+    
+    \textbf{Orthogonal Stochastic Processes: }$c_{x,y,k,n}=\E[x_ky_{k-n}^*]=0\ \forall k,n\in\mathbb{Z}$. For jointly WSS processes, equivalent to $C_{x,y}(e^{j\omega})=0\ \forall\omega\in\R$.
+    
+    \textbf{Wiener filtering: }$\hat{x}=h\ast y$, $h=\argmin_h \E[|e_n:=x_n-\hat{x}_n|^2]$. Assume $x,w$ uncorrelated, WSS, zero-mean. $\hat{x}\in \cS:=\overline{\text{span}}(\{y_{n-k}\}_{k\in\mathbb{Z}})$, so best estimator $e\perp \cS$. This gives $H(e^{j\omega})=\frac{C_{x,y}(e^{j\omega})}{A_y(e^{j\omega})}$.
+    
+    \section{Beamforming}
+    In narrowband beamforming, output is $y_n=\sum_{k=0}^{M-1}h_k^* x_{k,n}$, $M$ number of array elements.
+    \textbf{Array response vector: }$\aa(\theta)=[H_0(\omega)e^{-j\omega\tau_0(\theta)}\cdots H_{M-1}(\omega)e^{-j\omega\tau_{M-1}(\theta)}]^T$, $H_k$ the transfer function of the $k-$th sensor, $\tau_k(\theta)$ the time needed for the wave to travel from reference point to sensor $k$. If sensors ideal ($H_k(\omega)=1\ \forall k$) and sensor 0 taken as reference, $\aa(\theta)=[1\quad e^{-j\omega\tau_1(\theta)}\cdots(\omega)e^{-j\omega\tau_{M-1}(\theta)}]^T$. $x_n=\aa(\theta)s_n+e_n$ For multiple sources $\xx=[\aa(\theta_0)\cdots \aa(\theta_{N-1})][\ss_0\cdots \ss_{N-1}]^T + \ee = A\ss + \ee$.
+    
+    \textbf{Uniform linear array: }Equispaced sensors in same line. Under plane-wave assumption, $\tau_k=k\frac{d\sin\theta}{c}$, $\theta\in[-\frac{\pi}{2},\frac{\pi}{2})$ (front-back ambiguity), $c$ velocity of wave propagation, $d$ distance between consecutive sensors.
+    
+    \textbf{Beamformer's response: }$r(\theta)=\hh^*\aa(\theta)$. Beampattern is $|r(\theta)|^2$. If $\aa(\theta_1)=\aa(\theta_2)$ and $\theta_1\neq \theta_2$, spatial aliasing, i.e. spacing between sensors is too large.
+    
+    \textbf{Signal model: }For narrowband source with DOA $\theta$ and power $\sigma_s^2$, if there's no noise $\xx_n=\aa(\theta)s_n$, so $R_x=\sigma_s^2\aa(\theta)\aa^*(\theta)$.
+    
+    \subsection{Data independent beamforming}
+    \textbf{Phased array (delay-and-sum) beamformer: }$\hh=\aa(\theta_0)$, where signal comes from single location $\theta_0$. Can control beam width of main lobe and height of side lobes with tapering function $\hh=T\aa(\theta_0)$, with $T$ diagonal $M\times M$ with tapering weights.
+    
+    \textbf{Response design: }To find $\hh$ giving response similar to $r_d(\theta)$, pose as overdetermined problem $\argmin_{\hh}\norm{A^*\hh-\rr_d}_2^2$, $A=[\aa(\theta_0)\cdots \aa(\theta_{P-1})]$, $\rr_d=[r_d(\theta_0)\cdots r_d(\theta_{P-1})]^*$. If $A$ full rank $h=(AA^*)^{-1}A\rr_d$.
+    
+    \textbf{White noise gain: }Output power due to white noise of unit power, i.e. $\hh^*\hh$. If this is high, beamformer output could have poor SNR. Control it by low-rank approximation of $A$ or solving previous problem with regularization $+\lambda \norm{\hh}^2_2$, which gives $h=(AA^*+\lambda I)^{-1}A\rr_d$.
+    
+    \subsection{Data dependent beamforming}
+    Output of beamformer approximates desired $\yy_d$. Usually pose as $\argmin_h\E[|\yy-\yy_d|^2]$, which gives $\hh=R_x^{-1}r_{x,d}$.
+    
+    \textbf{LCMV: }Constrain so that signals from desired directions have specified gain with $C^*\hh=\ff$. Solve $\min_{\hh}\hh^*R_x\hh$ (minimize power at beamformer's output) subject to constraints. This gives $\hh=R_x^{-1}C(C^*R_x^{-1}C)^{-1}\ff$.
+    
+    \textbf{GSC: }Transform LCMV to unconstrained. Decompose $\hh=\hh_0-\gg$, $\hh_0\in \cR(C),\gg\in\cN(C^*)$. $\hh_0=C(C^* C)^{-1}\ff$, the min norm solution satisfying constraints (data independent), $\gg=C_n\hh_n$, where $C_n$ basis of $\cN(C^*)$ (has no contribution of satisfaction of constraint bt allows to minimize objective). Solve $\min_{\hh_n}(\hh_0-C_n\hh_n)^*R_x(\hh_0-C_n\hh_n)$, which gives $\hh_n=(C_n^*R_x C_n)^{-1}C_n^* R_x \hh_0$. The data-dependent beamformer vector has nulls in the directions of the constraints, which is ensured by the signal blocking matrix $C_n$.
+    
+    \section{Approximation Theory}
+    \subsection{Polynomials (finite interval)}
+    Approximate $x(t)$ in finite interval $[a,b]$ by polynomial of order $K$ $p_k(t)=\sum_{k=0}^Ka_k t^k$. Approximation error $e_K(t)=x(t)-p_K(t)$, $t\in[a,b]$. \adv{Smooth approximation. Can approximate continuous functions arbitrarily well over finite intervals (Weierstrass theorem). Polynomials are infinitely differentiable.} \disadv{Approximating continuous functions with high degree polynomials tends to be problematic (e.g. at ending points of interval). Cannot approximate discontinuous functions or over infinite intervals well.}
+    
+    \subsubsection{Least square minimization}
+    Minimize $\norm{e_K}_2^2=\int_a^b |x(t)-p_K(t)|^2dt$. Since $\cP_K([a,b])=\text{span}(\{1,t,\dots,t^K\})\subset \cL^2([a,b])$, solution (by projection theorem) is $p_K(t)=\sum_{k=0}^{K}\lin{x,\phi_k}\phi_k(t)$, $\{\phi_k\}_{k=0}^K$ orthonormal basis of $\cP_K([a,b])$. These inner products with basis functions are not always easy to obtain (e.g. if we only have samples). \textbf{Gibbs phenomenon: }No matter how large $K$ is, absolute error stays the same at the ripple near to the boundary.
+    
+    \textbf{Legendre polynomials: } Orthonormal basis of $\cP_K([-1,1])$. The Legendre polynomial of degree $n$, $L_n(t)=\frac{1}{2^n n!}\frac{d^n}{dt^n}(t^2-1)^n$, has $n$ real distinct zeros in the interior of the interval $[-1, 1]$
+    
+    \subsubsection{Lagrange interpolation}
+    Observe function $x(t)$ at points (nodes) $t_0,\dots,t_K$. Constrain $p_K(t_i)=x(t_i) \forall i$. Leads to Vandermonde system, invertible iff $\{t_i\}$ distinct with solution $p_K(t)=\sum_{k=0}^K x(t_k)\prod{i=0,i\neq k}^K\frac{t-t_i}{t_k-t_i}$.
+    
+    \textbf{Error: }For $x(t)\in C{K+1}([a,b])$ and $\{t_i\}$ distinct, $|e_K(t)|\leq \frac{\prod_{k=0}^K |t-t_k|}{(K+1)!}\max_{\eta\in[a,b]}|x^{(K+1)}(\eta)|$. So error increases at the boundaries. Last term means error higher for wigglier functions.
+    
+    \subsubsection{Taylor series expansion}
+    Assume $x(t)\in C^K([a,b])$ and find degree $K$ polynomial with matching derivatives at $t_0\in[a,b]$. Solution $p_K(t)=\sum_{k=0}^K x(t_k)\frac{(t-t_0)^k}{k!}x^{(k)}(t_0)$.
+    
+    \textbf{Error: }For $x(t)\in C{K+1}([a,b])$, $|e_K(t)|\leq \frac{|t-t_0|^{K+1}}{(K+1)!}\max_{\eta\in[a,b]}|x^{(K+1)}(\eta)|$.
+    
+    \subsubsection{Minimax approximation}
+    Minimize $\norm{e_K}_{\infty}=\max_{t\in[a,b]}|e_K(t)|$. Non trivial since not Hilbert space. With polynomial of degree $\leq K$, minimax approximation $p_K$ unique and determined by at least $K+2$ points $a\leq s_0<s_1<\cdots<s_{K+1}\leq b$ for which $e_K(s_k)=\pm 1 (-1)^k\norm{e_K}_\infty$ (Chebyshev equioscillation theorem). So expect to reach maximum error in $K+2$ points with alternating sign. Nearly solve by taking nodes minimizing maximum error for Lagrange interpolation. These optimal $K+1$ nodes given by roots of $K+1-$degree Chebyshev polynomial (its scaled version $2^{-K}T_{K+1}$ have the minimum $\ell_\infty$ norm among all $K+1-$degree polynomials): $t_k=\cos\left(\frac{2k+1}{2(K+1)}\pi\right)$.
+    
+    \subsection{Splines}
+    \adv{Can approximate discontinuous functions well and over the entire real line.} Spline of degree $K$ with knots $\tau$ (countable strictly-increasing sequence) is a polynomial of degree $\leq K$ on $[\tau_n,\tau_{n+1})$ and its derivatives of order $0,\dots,K-1$ are continuous. $S_{K,\tau}\subset \cL^2(\R)$ is the spline space of degree $K$ with knots $\tau$. When $\tau$ evenly spaced and doubly infinite, spline space called uniform. For spline of degree $K$ with $L+1$ knots, $K-1$ degrees of freedom. In practice for $K=3$, specifies derivatives at end-points or make sure 3rd derivative continuous at second and penultimate knots (not-a-knot condition).
+    
+    \subsubsection{B-Splines}
+    Elementary B-Spline of degree 0 is $\beta^{(0)}(t)=1$ for $t\in [-0.5,0.5)$ (0 o.w.) and of degree $K$, $\beta^{(K)}=\beta^{(K-1)}\ast \beta^{(0)}$ (supported on $[-\frac{K+1}{2},\frac{K+1}{2})$). Shifts of this are called B-splines of degree $K$. FT is $B^{(K)}(\omega)=\text{sinc}^{K+1}(\omega/2)$. For even $K$, $\beta^{(K)}$ smooth on $(z-0.5,z+0.5)$ and if odd on $(z,z+1)$ $z\in\mathbb{Z}$.
+    \textbf{Causal B-Splines: }Causal elementary B-Spline of degree 0 is $\beta_+^{(0)}(t)=1$ for $t\in [0,1)$ (0 o.w.) and of degree $K$, $\beta_+^{(K)}=\beta^{(K)}(t-0.5(K+1))$. $\beta_+^{(K)}$ is a generator of shift-invariant subspace $S_{K,\mathbb{Z}}$, in fact the one with shortest support. $\overline{\text{span}}(\{\beta^{(K)}(t-k)\}_{k\in \mathbb{Z}})=S_{K,\mathbb{Z}}$ for odd $K$ and $S_{K,\mathbb{Z}+0.5}$ for even $K$.
+    
+    \textbf{Differentiation: }$\frac{d}{dt}x(t)=\sum_{k\in \mathbb{Z}}\alpha_k'\beta_+^{(K-1)}(t-k)$, $\alpha_k'=\alpha_k-\alpha_{k-1}$.
+    
+    \textbf{Integration: }$\int_{-\infty}^\tau x(\tau)d\tau=\sum_{k\in \mathbb{Z}}\alpha_k^{(1)}\beta_+^{(K+1)}(t-k)$, $\alpha_k^{(1)}=\sum_{m=-\infty}^k\alpha_m$.
+    
+    \textbf{Canonical Dual Spline Basis: }For dual basis of $\{\beta_+^{(1)}(t-k)\}_{k\in \mathbb{Z}}$, need $\lin{\tilde{\beta}_+^{(1)}(t-i),\beta_+^{(1)}(t-k)}=\delta_{i-k}$. For canonical dual, need $\tilde{\beta}_+^{(1)}\in S_{1,\mathbb{Z}}$.
+    $\hat{x}(t)=\sum_{k\in \mathbb{Z}}\lin{x(t),\tilde{\beta}_+^{(1)}(t-k)}\beta_+^{(1)}(t-k)$. Dual spline of degree 1 has infinite support but decays exponentially.
+    \subsubsection{Polynomial reproduction (Strang-Fix theorem)}
+    If $\int_{-\infty}^{\infty}(1+|t|^K)|\phi(t)|dt<\infty$ for $k\in \mathbb{N}$ and $\phi$ function with FT $\Phi$, following are equivalent:
+    
+    (i) $p_K(t)=\sum_{k\in \mathbb{Z}}\alpha_k \phi(t-k)$ for $p_K$ a polynomial of degree $\leq K$.
+    
+    (ii) $\Phi$ and its first $K$ derivatives satisfy $\Phi(0)\neq 0$ and $\Phi^{(k)}(2\phi l)=0$ for $k=1,\dots,K$, $l\in \mathbb{Z}\setminus\{0\}$.
+    
+    \textbf{Partition of unity (case of Strang-Fix): } $\phi_1(t)=\sum_{n\in\mathbb{Z}}\phi(t-n)=1$ (periodized version with period 1 of $\phi\in \cL^1(\R)$) iff $\Phi(2\phi k)=\delta_k$ $k\in \mathbb{Z}$.
+    
+    \subsection{Series Truncation}
+    Given orthonormal expansion in infinite Hilbert space $x=\sum_{k\in\mathbb{Z}}c_k\phi_k$, $c_k=\lin{x,\phi_k}$. Cannot store all coefficients.
+    \textbf{Linear approximation: }Retain coefficients with a priori fixed set of indices. \adv{Don't depend on $x$. Linear.} \disadv{Non optimal in error.}
+    \textbf{Nonlinear approximation: }Retain $M$ largest coefficients in absolute value. \disadv{Depend on $x$. Non linear. Store index of coefficients.} \adv{Optimal in error.} To proof latter select indices in $\cI_M$ and apply Parseval: $\norm{x-\hat{x}}^2=\norm{\sum_{m\in\mathbb{Z}\setminus\cI_M}c_m\phi_m}=\sum_{m\in\mathbb{Z}\setminus\cI_M}|c_m|^2$.
+    
+    \section{Uncertainty Principles}
+    $\mu_t:=\int_{-\infty}^\infty t\frac{|x(t)|^2}{\norm{x}^2}dt$, $\Delta_t^2:=\int_{-\infty}^\infty (t-\mu_t)^2\frac{|x(t)|^2}{\norm{x}^2}dt$. $\mu_f:=\int_{-\infty}^\infty \omega\frac{|X(\omega)|^2}{2\pi \norm{x}^2}d\omega$, $\Delta_f^2:=\int_{-\infty}^\infty (\omega-\mu_t)^2\frac{|X(\omega)|^2}{2\pi \norm{x}^2}d\omega$.
+    \subsection{Heisenberg principle}
+    For $x\in \cL^2(\R)$ $\Delta_t^2 \Delta_f^2 \geq \frac{1}{4}$ with equality for Gaussian functions $x(t)=\gamma e^{-\alpha t^2},\ \alpha > 0$. To proof, suppose w.l.o.g. $\mu_t=\mu_f=0$, use Cauchy-Schwarz, Parseval, integration by parts with $(|x(t)|^2)$ and $\lim_{t\to \infty}t x^2(t)=0$ (since $x\in \cL^2(\R)$, i.e. decays faster than $1/t$).
+    
+    \textbf{Shifts and scalings: }Shifting changes $\mu$ in domain of shift. $\sqrt{a}x(at)\leftrightarrow X(\omega/a)/\sqrt{a}$ gives $\mu_t/a,\Delta_t/a,a\mu_f,a\Delta_f$.
+    
+    \subsection{Heisenberg principle for infinite sequences}
+    Same definitions with discrete sum in time and DTFT (so integrals in $[-\pi,\pi]$). For $x\in \ell^2(\mathbb{Z})$ and $X(e^{j\pi})=0$ (necessary extra condition), $\Delta_n^2 \Delta_f^2 > \frac{1}{4}$ and lower bound cannot be achieved.
+    
+    \textbf{Shifts and scalings: }Shifting in frequency gives $\mu_f+\omega_0$ if signal still $X(e^{j\pi})=0$ ("signal not splitted"). Upsample and postfilter gives $N\mu_n,N\Delta_n,\mu_f/N,\Delta_f/N$. Prefilter and downsample $\mu_n/N,\Delta_n/N,N\mu_f,N\Delta_f$ if $x\in\text{BL}[-\pi/N,\pi/N]$.
+    
+    \subsection{Uncertainty principle for finite-length sequences}
+    $x_n\in \mathbb{C}^N$ and $X_k$ its DFT with $N_n$ and $N_k$ nonzero coefficients respectively. $N_nN_k\geq N$. So cannot be sparse in both domains.
+    
+\end{multicols*}
+\end{document}

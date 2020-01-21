@@ -1,0 +1,46 @@
+    \begin{scaletikzpicturetowidth}{\textwidth}
+    
+    \tikzset{%
+        block/.style    = {draw, thick, rectangle, minimum height = 1em, fill=blue!20,},
+        sum/.style      = {draw, circle, node distance = 2cm}, % Adder
+        input/.style    = {coordinate}, % Input
+        output/.style   = {coordinate} % Output
+    }
+    \pgfdeclarelayer{background}
+	\pgfdeclarelayer{foreground}
+	\pgfsetlayers{background,main,foreground}
+	\tikzstyle{texto} = [above, text width=6em, text centered]
+    \newcommand{\background}[5]{%
+		\begin{pgfonlayer}{background}
+			% Left-top corner of the background rectangle
+			\path (#1.west |- #2.north)+(-0.2em,0.6em) node (a1) {};
+			% Right-bottom corner of the background rectanle
+			\path (#3.east |- #4.south)+(+0.2em,-0.2em) node (a2) {};
+			% Draw the background
+			\path[fill=yellow!20,rounded corners, draw=black!50, dashed]
+			(a1) rectangle (a2);
+			\path (a1.east |- a1.south)+(1.7em,-0.5em) node (u1)[texto]
+			{\small\textit{#5}};
+	\end{pgfonlayer}}
+    \begin{tikzpicture}[scale=\tikzscale]
+    \draw
+    % Drawing the blocks of first filter :
+    node at (0,0){}
+    node [input, name=input1] {} 
+    node [block, right = 3em of input1] (pref) {$\tilde{g}(t)$}
+    node [block, right = 2em of pref] (samp) {Sampling $T$}
+    node [block, right = 3em of samp] (delt) {Deltas at $nT$}
+    node [block, right = 2em of delt] (filt) {$g(t)$}
+    node [output, name=output1, right = 3em of filt] {};
+    
+    \background{pref}{samp}{samp}{pref}{$\tilde{\Phi}^*$}
+    \background{delt}{filt}{filt}{delt}{$\Phi$}
+    % Joining blocks. 
+    % Commands \draw with options like [->] must be written individually
+    \draw[->](input1) -- node[above] {$x(t)$}(pref);
+    \draw[->](pref) -- node {}(samp);
+    \draw[->](samp) -- node[above] {$y_n$} (delt);
+    \draw[->](delt) -- node[above] {$\tilde{x}(t)$}(filt);
+    \draw[->](filt) -- node[above] {$\hat{x}(t)$} (output1);
+    \end{tikzpicture}
+    \end{scaletikzpicturetowidth}
